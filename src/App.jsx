@@ -29,6 +29,27 @@ function App() {
     }
   ]);
 
+  // Estado para el mensaje de retroalimentación
+  const [feedback, setFeedback] = useState({
+    message: '',
+    type: '', // 'success' o 'error'
+    visible: false
+  });
+
+  // Función para mostrar retroalimentación
+  const showFeedback = (message, type = 'success') => {
+    setFeedback({
+      message,
+      type,
+      visible: true
+    });
+
+    // Ocultar el mensaje después de 3 segundos
+    setTimeout(() => {
+      setFeedback(prev => ({ ...prev, visible: false }));
+    }, 3000);
+  };
+
   // Función para agregar un nuevo producto
   const addProduct = (newProduct) => {
     // Asignar un ID único (en una app real usaríamos una base de datos o UUID)
@@ -37,13 +58,26 @@ function App() {
       id: products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1
     };
     setProducts([...products, productWithId]);
+    
+    // Mostrar mensaje de éxito
+    showFeedback(`Producto "${newProduct.name}" agregado correctamente`);
   };
 
   return (
     <div className="app-container">
       <h1>Gestión de Productos</h1>
-      <ProductForm onAddProduct={addProduct} />
-      <ProductList products={products} />
+      
+      {/* Mensaje de retroalimentación */}
+      {feedback.visible && (
+        <div className={`feedback ${feedback.type}`}>
+          {feedback.message}
+        </div>
+      )}
+      
+      <div className="content-container">
+        <ProductForm onAddProduct={addProduct} />
+        <ProductList products={products} />
+      </div>
     </div>
   )
 }
