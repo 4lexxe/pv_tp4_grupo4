@@ -8,12 +8,24 @@ const ProductForm = ({ onAddProduct }) => {
     stock: ''
   });
 
+  /***************************************
+   * MANEJO DE EVENTOS DEL FORMULARIO
+   ***************************************/
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setProductData({
-      ...productData,
+    
+    // Asegurarse de que los valores numéricos sean válidos
+    if ((name === 'price' || name === 'stock') && value !== '') {
+      // Permitir solo valores numéricos válidos o campo vacío
+      if (!/^\d*\.?\d*$/.test(value)) {
+        return; // No actualizar si no es un número válido
+      }
+    }
+    
+    setProductData(prevData => ({
+      ...prevData,
       [name]: value
-    });
+    }));
   };
 
   const handleSubmit = (e) => {
@@ -22,8 +34,8 @@ const ProductForm = ({ onAddProduct }) => {
     // Convertir valores numéricos
     const formattedProduct = {
       ...productData,
-      price: Number(productData.price),
-      stock: Number(productData.stock)
+      price: productData.price === '' ? 0 : Number(productData.price),
+      stock: productData.stock === '' ? 0 : Number(productData.stock)
     };
     
     // Llamar a la función proporcionada por el componente padre
@@ -57,13 +69,13 @@ const ProductForm = ({ onAddProduct }) => {
         <div className="form-group">
           <label htmlFor="price">Precio:</label>
           <input
-            type="number"
+            type="text" /* Cambiado de 'number' a 'text' para mejor control */
             id="price"
             name="price"
             value={productData.price}
             onChange={handleChange}
+            placeholder="0"
             required
-            min="0"
           />
         </div>
         
@@ -82,13 +94,13 @@ const ProductForm = ({ onAddProduct }) => {
         <div className="form-group">
           <label htmlFor="stock">Stock:</label>
           <input
-            type="number"
+            type="text" /* Cambiado de 'number' a 'text' para mejor control */
             id="stock"
             name="stock"
             value={productData.stock}
             onChange={handleChange}
+            placeholder="0"
             required
-            min="0"
           />
         </div>
         
