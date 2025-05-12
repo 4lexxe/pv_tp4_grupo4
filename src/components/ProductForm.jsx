@@ -18,8 +18,24 @@ const ProductForm = ({ onAddProduct }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Aquí se implementará la lógica para agregar el producto
-    console.log('Datos del producto:', productData);
+    
+    // Convertir valores numéricos
+    const formattedProduct = {
+      ...productData,
+      price: Number(productData.price),
+      stock: Number(productData.stock)
+    };
+    
+    // Llamar a la función proporcionada por el componente padre
+    onAddProduct(formattedProduct);
+    
+    // Limpiar el formulario
+    setProductData({
+      name: '',
+      price: '',
+      category: '',
+      stock: ''
+    });
   };
 
   return (
@@ -34,6 +50,7 @@ const ProductForm = ({ onAddProduct }) => {
             name="name"
             value={productData.name}
             onChange={handleChange}
+            required
           />
         </div>
         
@@ -45,6 +62,8 @@ const ProductForm = ({ onAddProduct }) => {
             name="price"
             value={productData.price}
             onChange={handleChange}
+            required
+            min="0"
           />
         </div>
         
@@ -56,6 +75,7 @@ const ProductForm = ({ onAddProduct }) => {
             name="category"
             value={productData.category}
             onChange={handleChange}
+            required
           />
         </div>
         
@@ -67,6 +87,8 @@ const ProductForm = ({ onAddProduct }) => {
             name="stock"
             value={productData.stock}
             onChange={handleChange}
+            required
+            min="0"
           />
         </div>
         
