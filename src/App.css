@@ -75,6 +75,39 @@ body {
   gap: 2rem;
 }
 
+/* Botón para agregar producto */
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+.btn-add-product {
+  background-color: #FFD700;
+  color: #333;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+}
+
+.btn-add-product:hover {
+  background-color: #FFC400;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.btn-add-product::before {
+  content: "+";
+  margin-right: 8px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
 h1 {
   text-align: center;
   margin-bottom: 20px;
@@ -109,23 +142,78 @@ h1 {
 }
 
 /***************************************
- * ESTILOS PARA EL FORMULARIO
+ * ESTILOS PARA EL MODAL
  ***************************************/
-
-.product-form {
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e6e6e6;
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+  backdrop-filter: blur(2px);
+  animation: fadeIn 0.2s ease;
 }
 
-.product-form h2 {
-  color: #333;
-  margin-bottom: 20px;
-  text-align: center;
+.modal-container {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 550px;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
   border-bottom: 2px solid #FFD700;
-  padding-bottom: 10px;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #333;
+}
+
+.modal-close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #666;
+  transition: color 0.2s;
+}
+
+.modal-close-btn:hover {
+  color: #333;
+}
+
+.modal-content {
+  padding: 20px;
+}
+
+/***************************************
+ * ESTILOS PARA EL FORMULARIO
+ ***************************************/
+.product-form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .form-group {
@@ -191,23 +279,41 @@ h1 {
   color: #333;
 }
 
-button[type="submit"] {
-  background-color: #FFD700;
-  color: #333;
-  border: none;
-  padding: 12px 20px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: bold;
-  margin-top: 10px;
-  width: 100%;
-  transition: background-color 0.3s;
+/* Botones de acción del formulario */
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
 }
 
-button[type="submit"]:hover {
+.btn-submit, .btn-cancel {
+  padding: 12px 20px;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: none;
+}
+
+.btn-submit {
+  background-color: #FFD700;
+  color: #333;
+  flex: 1;
+}
+
+.btn-submit:hover {
   background-color: #FFC400;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.btn-cancel {
+  background-color: #f1f1f1;
+  color: #333;
+}
+
+.btn-cancel:hover {
+  background-color: #e5e5e5;
 }
 
 /***************************************
@@ -363,8 +469,18 @@ button[type="submit"]:hover {
     flex-wrap: wrap;
   }
 
-  .product-form, .product-list {
+  .product-list {
     flex: 1;
-    min-width: 300px;
   }
 }
+
+@media (max-width: 480px) {
+  .form-actions {
+    flex-direction: column;
+  }
+  
+  .modal-container {
+    max-height: 95vh;
+  }
+}
+

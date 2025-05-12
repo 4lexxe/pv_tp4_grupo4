@@ -2,8 +2,20 @@ import { useState } from 'react'
 import './App.css'
 import ProductList from './components/ProductList'
 import ProductForm from './components/ProductForm'
+import Modal from './components/Modal'
 
 function App() {
+  /***************************************
+   * ESTADO PARA EL MODAL
+   ***************************************/
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Función para abrir el modal
+  const openModal = () => setIsModalOpen(true);
+  
+  // Función para cerrar el modal
+  const closeModal = () => setIsModalOpen(false);
+
   /***************************************
    * ESTADO INICIAL DE PRODUCTOS
    ***************************************/
@@ -78,6 +90,9 @@ function App() {
     
     // Mostrar mensaje de éxito
     showFeedback(`Producto "${newProduct.name}" agregado correctamente`);
+    
+    // Cerrar el modal después de agregar
+    closeModal();
   };
 
   return (
@@ -91,10 +106,29 @@ function App() {
         </div>
       )}
       
+      {/* Botón para abrir el modal */}
+      <div className="action-buttons">
+        <button className="btn-add-product" onClick={openModal}>
+          Agregar Nuevo Producto
+        </button>
+      </div>
+      
+      {/* Contenedor principal */}
       <div className="content-container">
-        <ProductForm onAddProduct={addProduct} />
         <ProductList products={products} />
       </div>
+      
+      {/* Modal con formulario */}
+      <Modal 
+        isOpen={isModalOpen} 
+        onClose={closeModal} 
+        title="Agregar Nuevo Producto"
+      >
+        <ProductForm 
+          onAddProduct={addProduct} 
+          onCancel={closeModal} 
+        />
+      </Modal>
     </div>
   )
 }

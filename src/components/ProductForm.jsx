@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const ProductForm = ({ onAddProduct }) => {
+const ProductForm = ({ onAddProduct, onCancel }) => {
   const [productData, setProductData] = useState({
     name: '',
     price: '',
@@ -66,87 +66,91 @@ const ProductForm = ({ onAddProduct }) => {
   };
 
   return (
-    <div className="product-form">
-      <h2>Agregar Nuevo Producto</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="name">Nombre:</label>
+    <form onSubmit={handleSubmit} className="product-form-container">
+      <div className="form-group">
+        <label htmlFor="name">Nombre:</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          value={productData.name}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      
+      <div className="form-group">
+        <label htmlFor="price">Precio:</label>
+        <input
+          type="text" /* Cambiado de 'number' a 'text' para mejor control */
+          id="price"
+          name="price"
+          value={productData.price}
+          onChange={handleChange}
+          placeholder="0"
+          required
+        />
+      </div>
+      
+      <div className="form-group">
+        <label htmlFor="category">Categoría:</label>
+        <input
+          type="text"
+          id="category"
+          name="category"
+          value={productData.category}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      
+      <div className="form-group">
+        <label htmlFor="stock">Stock:</label>
+        <input
+          type="text" /* Cambiado de 'number' a 'text' para mejor control */
+          id="stock"
+          name="stock"
+          value={productData.stock}
+          onChange={handleChange}
+          placeholder="0"
+          required
+        />
+      </div>
+      
+      <div className="form-group">
+        <label htmlFor="imageUrl">URL de Imagen:</label>
+        <input
+          type="url"
+          id="imageUrl"
+          name="imageUrl"
+          value={productData.imageUrl}
+          onChange={handleChange}
+          placeholder="https://ejemplo.com/imagen.jpg"
+        />
+        <small className="form-help">Deja vacío para usar imagen por defecto</small>
+      </div>
+      
+      <div className="form-group checkbox-group">
+        <label className="checkbox-label">
           <input
-            type="text"
-            id="name"
-            name="name"
-            value={productData.name}
+            type="checkbox"
+            name="freeShipping"
+            checked={productData.freeShipping}
             onChange={handleChange}
-            required
           />
-        </div>
-        
-        <div className="form-group">
-          <label htmlFor="price">Precio:</label>
-          <input
-            type="text" /* Cambiado de 'number' a 'text' para mejor control */
-            id="price"
-            name="price"
-            value={productData.price}
-            onChange={handleChange}
-            placeholder="0"
-            required
-          />
-        </div>
-        
-        <div className="form-group">
-          <label htmlFor="category">Categoría:</label>
-          <input
-            type="text"
-            id="category"
-            name="category"
-            value={productData.category}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        
-        <div className="form-group">
-          <label htmlFor="stock">Stock:</label>
-          <input
-            type="text" /* Cambiado de 'number' a 'text' para mejor control */
-            id="stock"
-            name="stock"
-            value={productData.stock}
-            onChange={handleChange}
-            placeholder="0"
-            required
-          />
-        </div>
-        
-        <div className="form-group">
-          <label htmlFor="imageUrl">URL de Imagen:</label>
-          <input
-            type="url"
-            id="imageUrl"
-            name="imageUrl"
-            value={productData.imageUrl}
-            onChange={handleChange}
-            placeholder="https://ejemplo.com/imagen.jpg"
-          />
-          <small className="form-help">Deja vacío para usar imagen por defecto</small>
-        </div>
-        
-        <div className="form-group checkbox-group">
-          <label className="checkbox-label">
-            <input
-              type="checkbox"
-              name="freeShipping"
-              checked={productData.freeShipping}
-              onChange={handleChange}
-            />
-            <span>Envío gratis</span>
-          </label>
-        </div>
-        
-        <button type="submit">Guardar Producto</button>
-      </form>
-    </div>
+          <span>Envío gratis</span>
+        </label>
+      </div>
+      
+      <div className="form-actions">
+        <button type="submit" className="btn-submit">Guardar Producto</button>
+        {onCancel && (
+          <button type="button" className="btn-cancel" onClick={onCancel}>
+            Cancelar
+          </button>
+        )}
+      </div>
+    </form>
   );
 };
 
