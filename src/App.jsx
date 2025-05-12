@@ -75,7 +75,7 @@ function App() {
   };
 
   return (
-    <div className="app-container dark-theme">
+    <div className="app-container">
       <h1 className="app-title">Gestión de Productos</h1>
       
       {/* Mensaje de retroalimentación */}
