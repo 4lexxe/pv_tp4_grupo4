@@ -155,20 +155,21 @@ h1 {
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  padding: 1rem;
+  padding: 2rem;
   backdrop-filter: blur(2px);
   animation: fadeIn 0.2s ease;
 }
 
 .modal-container {
   background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
   width: 100%;
   max-width: 550px;
-  max-height: 90vh;
+  max-height: 85vh;
   overflow-y: auto;
   animation: slideIn 0.3s ease;
+  margin: 0 auto;
 }
 
 @keyframes slideIn {
@@ -180,31 +181,43 @@ h1 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 20px;
+  padding: 20px 24px;
   border-bottom: 2px solid #FFD700;
+  background-color: #FFFDF0;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
 }
 
 .modal-header h2 {
   margin: 0;
   font-size: 1.25rem;
   color: #333;
+  font-weight: 600;
 }
 
 .modal-close-btn {
   background: none;
   border: none;
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   cursor: pointer;
   color: #666;
   transition: color 0.2s;
+  line-height: 1;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
 }
 
 .modal-close-btn:hover {
   color: #333;
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 .modal-content {
-  padding: 20px;
+  padding: 24px;
 }
 
 /***************************************
@@ -213,29 +226,30 @@ h1 {
 .product-form-container {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 18px;
 }
 
 .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 8px;
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
+  margin-bottom: 8px;
+  font-weight: 600;
   color: #333;
+  font-size: 14px;
 }
 
 .form-group input {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   border: 1px solid #ddd;
-  border-radius: 4px;
+  border-radius: 8px;
   font-size: 16px;
   background-color: #FFFDF0;
   color: #000000;
-  transition: border-color 0.3s;
+  transition: all 0.3s ease;
 }
 
 .form-group input::placeholder {
@@ -246,6 +260,7 @@ h1 {
   outline: none;
   border-color: #FFD700;
   box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
+  background-color: #FFFFF5;
 }
 
 /* Estilos para el texto de ayuda */
@@ -253,12 +268,12 @@ h1 {
   display: block;
   color: #666;
   font-size: 12px;
-  margin-top: 4px;
+  margin-top: 6px;
 }
 
 /* Estilos para checkbox */
 .checkbox-group {
-  margin-top: 20px;
+  margin-top: 8px;
 }
 
 .checkbox-label {
@@ -275,7 +290,7 @@ h1 {
 }
 
 .checkbox-label span {
-  font-size: 16px;
+  font-size: 14px;
   color: #333;
 }
 
@@ -283,14 +298,14 @@ h1 {
 .form-actions {
   display: flex;
   gap: 12px;
-  margin-top: 20px;
+  margin-top: 24px;
 }
 
 .btn-submit, .btn-cancel {
-  padding: 12px 20px;
-  border-radius: 4px;
+  padding: 14px 24px;
+  border-radius: 8px;
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.3s;
   border: none;
@@ -304,7 +319,8 @@ h1 {
 
 .btn-submit:hover {
   background-color: #FFC400;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
 }
 
 .btn-cancel {
@@ -314,6 +330,7 @@ h1 {
 
 .btn-cancel:hover {
   background-color: #e5e5e5;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 /***************************************
