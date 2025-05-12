@@ -146,7 +146,12 @@ h1 {
   border-radius: 4px;
   font-size: 16px;
   background-color: #FFFDF0;
+  color: #000000;
   transition: border-color 0.3s;
+}
+
+.form-group input::placeholder {
+  color: #999;
 }
 
 .form-group input:focus {
