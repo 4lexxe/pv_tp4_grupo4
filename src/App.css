@@ -402,6 +402,8 @@ h1 {
   justify-content: center;
   border-bottom: 1px solid #eee;
   overflow: hidden;
+  padding: 5px;
+  position: relative;
 }
 
 .product-thumbnail {
@@ -409,10 +411,12 @@ h1 {
   height: 100%;
   object-fit: contain;
   transition: transform 0.3s ease;
+  display: block;
+  padding: 5px;
 }
 
 .product-card:hover .product-thumbnail {
-  transform: scale(1.03);
+  transform: scale(1.05);
 }
 
 /* Placeholder para imagen */

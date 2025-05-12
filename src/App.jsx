@@ -26,7 +26,7 @@ function App() {
       price: 120000,
       category: 'Electrónica',
       stock: 10,
-      imageUrl: 'https://via.placeholder.com/200?text=Laptop+HP',
+      imageUrl: 'https://ar-media.hptiendaenlinea.com/catalog/product/cache/b3b166914d87ce343d4dc5ec5117b502/1/_/1_2.jpg',
       freeShipping: true
     },
     {
@@ -35,7 +35,7 @@ function App() {
       price: 5000,
       category: 'Accesorios',
       stock: 25,
-      imageUrl: 'https://via.placeholder.com/200?text=Mouse',
+      imageUrl: 'https://images.fravega.com/f500/6ee914b6ed6b30d8ae91a2157f367da0.jpg',
       freeShipping: true
     },
     {
@@ -44,7 +44,7 @@ function App() {
       price: 45000,
       category: 'Electrónica',
       stock: 5,
-      imageUrl: 'https://via.placeholder.com/200?text=Monitor',
+      imageUrl: 'https://fullh4rd.com.ar/img/productos/18/monitor-24-hikvision-dsd5024f2av2-fhd-100hz-vga-hdmi-0.jpg',
       freeShipping: true
     }
   ]);
