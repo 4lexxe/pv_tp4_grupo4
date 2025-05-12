@@ -155,7 +155,7 @@ h1 {
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  padding: 2rem;
+  padding: 1.5rem;
   backdrop-filter: blur(2px);
   animation: fadeIn 0.2s ease;
 }
@@ -165,11 +165,11 @@ h1 {
   border-radius: 12px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
   width: 100%;
-  max-width: 550px;
-  max-height: 85vh;
-  overflow-y: auto;
+  max-width: 500px;
   animation: slideIn 0.3s ease;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
 }
 
 @keyframes slideIn {
@@ -181,7 +181,7 @@ h1 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 24px;
+  padding: 15px 20px;
   border-bottom: 2px solid #FFD700;
   background-color: #FFFDF0;
   border-top-left-radius: 12px;
@@ -190,7 +190,7 @@ h1 {
 
 .modal-header h2 {
   margin: 0;
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   color: #333;
   font-weight: 600;
 }
@@ -198,17 +198,19 @@ h1 {
 .modal-close-btn {
   background: none;
   border: none;
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   cursor: pointer;
   color: #666;
   transition: color 0.2s;
   line-height: 1;
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
+  padding: 0;
+  margin-left: 8px;
 }
 
 .modal-close-btn:hover {
@@ -217,39 +219,47 @@ h1 {
 }
 
 .modal-content {
-  padding: 24px;
+  padding: 20px;
+  background-color: #fff;
 }
 
 /***************************************
  * ESTILOS PARA EL FORMULARIO
  ***************************************/
 .product-form-container {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  width: 100%;
 }
 
 .form-group {
-  margin-bottom: 8px;
+  margin-bottom: 0;
+  position: relative;
+}
+
+.form-group.full-width {
+  grid-column: 1 / -1;
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   font-weight: 600;
   color: #333;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .form-group input {
   width: 100%;
-  padding: 12px;
+  padding: 10px 12px;
   border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 16px;
+  border-radius: 6px;
+  font-size: 14px;
   background-color: #FFFDF0;
   color: #000000;
   transition: all 0.3s ease;
+  box-sizing: border-box;
 }
 
 .form-group input::placeholder {
@@ -259,7 +269,7 @@ h1 {
 .form-group input:focus {
   outline: none;
   border-color: #FFD700;
-  box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
+  box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.15);
   background-color: #FFFFF5;
 }
 
@@ -267,13 +277,15 @@ h1 {
 .form-help {
   display: block;
   color: #666;
-  font-size: 12px;
-  margin-top: 6px;
+  font-size: 11px;
+  margin-top: 4px;
+  font-style: italic;
 }
 
 /* Estilos para checkbox */
 .checkbox-group {
-  margin-top: 8px;
+  grid-column: 1 / -1;
+  margin-top: 4px;
 }
 
 .checkbox-label {
@@ -284,31 +296,34 @@ h1 {
 }
 
 .checkbox-label input[type="checkbox"] {
-  width: auto;
-  margin-right: 10px;
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
   cursor: pointer;
 }
 
 .checkbox-label span {
-  font-size: 14px;
+  font-size: 13px;
   color: #333;
 }
 
 /* Botones de acción del formulario */
 .form-actions {
   display: flex;
-  gap: 12px;
-  margin-top: 24px;
+  gap: 10px;
+  margin-top: 20px;
+  grid-column: 1 / -1;
 }
 
 .btn-submit, .btn-cancel {
-  padding: 14px 24px;
-  border-radius: 8px;
-  font-size: 16px;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s;
   border: none;
+  height: 40px;
 }
 
 .btn-submit {
@@ -319,18 +334,17 @@ h1 {
 
 .btn-submit:hover {
   background-color: #FFC400;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transform: translateY(-1px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .btn-cancel {
   background-color: #f1f1f1;
   color: #333;
+  min-width: 100px;
 }
 
 .btn-cancel:hover {
   background-color: #e5e5e5;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 /***************************************

@@ -67,7 +67,7 @@ const ProductForm = ({ onAddProduct, onCancel }) => {
 
   return (
     <form onSubmit={handleSubmit} className="product-form-container">
-      <div className="form-group">
+      <div className="form-group full-width">
         <label htmlFor="name">Nombre:</label>
         <input
           type="text"
@@ -82,7 +82,7 @@ const ProductForm = ({ onAddProduct, onCancel }) => {
       <div className="form-group">
         <label htmlFor="price">Precio:</label>
         <input
-          type="text" /* Cambiado de 'number' a 'text' para mejor control */
+          type="text"
           id="price"
           name="price"
           value={productData.price}
@@ -93,6 +93,19 @@ const ProductForm = ({ onAddProduct, onCancel }) => {
       </div>
       
       <div className="form-group">
+        <label htmlFor="stock">Stock:</label>
+        <input
+          type="text"
+          id="stock"
+          name="stock"
+          value={productData.stock}
+          onChange={handleChange}
+          placeholder="0"
+          required
+        />
+      </div>
+      
+      <div className="form-group full-width">
         <label htmlFor="category">Categoría:</label>
         <input
           type="text"
@@ -104,20 +117,7 @@ const ProductForm = ({ onAddProduct, onCancel }) => {
         />
       </div>
       
-      <div className="form-group">
-        <label htmlFor="stock">Stock:</label>
-        <input
-          type="text" /* Cambiado de 'number' a 'text' para mejor control */
-          id="stock"
-          name="stock"
-          value={productData.stock}
-          onChange={handleChange}
-          placeholder="0"
-          required
-        />
-      </div>
-      
-      <div className="form-group">
+      <div className="form-group full-width">
         <label htmlFor="imageUrl">URL de Imagen:</label>
         <input
           type="url"
@@ -143,7 +143,7 @@ const ProductForm = ({ onAddProduct, onCancel }) => {
       </div>
       
       <div className="form-actions">
-        <button type="submit" className="btn-submit">Guardar Producto</button>
+        <button type="submit" className="btn-submit">Guardar</button>
         {onCancel && (
           <button type="button" className="btn-cancel" onClick={onCancel}>
             Cancelar
