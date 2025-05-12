@@ -7,13 +7,18 @@ const ProductList = ({ products }) => {
       {products.length === 0 ? (
         <p>No hay productos disponibles.</p>
       ) : (
-        <ul>
+        <div className="product-cards">
           {products.map(product => (
-            <li key={product.id}>
-              <strong>{product.name}</strong> - ${product.price}
-            </li>
+            <div key={product.id} className="product-card">
+              <h3>{product.name}</h3>
+              <div className="product-details">
+                <p><strong>Precio:</strong> ${product.price.toLocaleString()}</p>
+                <p><strong>Categoría:</strong> {product.category}</p>
+                <p><strong>Stock:</strong> {product.stock} unidades</p>
+              </div>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );
