@@ -11,8 +11,11 @@ const ProductList = ({ products }) => {
           {products.map(product => (
             <div key={product.id} className="product-card">
               <div className="product-image">
-                {/* Placeholder para imagen */}
-                <div className="image-placeholder"></div>
+                <img 
+                  src={product.imageUrl} 
+                  alt={product.name}
+                  className="product-thumbnail"
+                />
               </div>
               <div className="product-content">
                 <h3 className="product-name">{product.name}</h3>
@@ -22,9 +25,11 @@ const ProductList = ({ products }) => {
                 <div className="product-installments">
                   en 6 cuotas de $ {Math.round(product.price / 6).toLocaleString()}
                 </div>
-                <div className="product-shipping">
-                  Envío gratis
-                </div>
+                {product.freeShipping && (
+                  <div className="product-shipping">
+                    Envío gratis
+                  </div>
+                )}
                 <div className="product-category">{product.category}</div>
                 <div className="product-stock">
                   {product.stock > 0 ? `${product.stock} disponibles` : 'Sin stock'}

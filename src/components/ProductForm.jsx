@@ -5,14 +5,25 @@ const ProductForm = ({ onAddProduct }) => {
     name: '',
     price: '',
     category: '',
-    stock: ''
+    stock: '',
+    imageUrl: '',
+    freeShipping: false
   });
 
   /***************************************
    * MANEJO DE EVENTOS DEL FORMULARIO
    ***************************************/
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
+    
+    // Manejo especial para checkbox
+    if (type === 'checkbox') {
+      setProductData(prevData => ({
+        ...prevData,
+        [name]: checked
+      }));
+      return;
+    }
     
     // Asegurarse de que los valores numéricos sean válidos
     if ((name === 'price' || name === 'stock') && value !== '') {
@@ -35,7 +46,9 @@ const ProductForm = ({ onAddProduct }) => {
     const formattedProduct = {
       ...productData,
       price: productData.price === '' ? 0 : Number(productData.price),
-      stock: productData.stock === '' ? 0 : Number(productData.stock)
+      stock: productData.stock === '' ? 0 : Number(productData.stock),
+      // Si no se proporciona una URL de imagen, usar un placeholder
+      imageUrl: productData.imageUrl || 'https://via.placeholder.com/200'
     };
     
     // Llamar a la función proporcionada por el componente padre
@@ -46,7 +59,9 @@ const ProductForm = ({ onAddProduct }) => {
       name: '',
       price: '',
       category: '',
-      stock: ''
+      stock: '',
+      imageUrl: '',
+      freeShipping: false
     });
   };
 
@@ -102,6 +117,31 @@ const ProductForm = ({ onAddProduct }) => {
             placeholder="0"
             required
           />
+        </div>
+        
+        <div className="form-group">
+          <label htmlFor="imageUrl">URL de Imagen:</label>
+          <input
+            type="url"
+            id="imageUrl"
+            name="imageUrl"
+            value={productData.imageUrl}
+            onChange={handleChange}
+            placeholder="https://ejemplo.com/imagen.jpg"
+          />
+          <small className="form-help">Deja vacío para usar imagen por defecto</small>
+        </div>
+        
+        <div className="form-group checkbox-group">
+          <label className="checkbox-label">
+            <input
+              type="checkbox"
+              name="freeShipping"
+              checked={productData.freeShipping}
+              onChange={handleChange}
+            />
+            <span>Envío gratis</span>
+          </label>
         </div>
         
         <button type="submit">Guardar Producto</button>

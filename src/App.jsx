@@ -13,21 +13,27 @@ function App() {
       name: 'Laptop HP',
       price: 120000,
       category: 'Electrónica',
-      stock: 10
+      stock: 10,
+      imageUrl: 'https://via.placeholder.com/200?text=Laptop+HP',
+      freeShipping: true
     },
     {
       id: 2,
       name: 'Mouse inalámbrico',
       price: 5000,
       category: 'Accesorios',
-      stock: 25
+      stock: 25,
+      imageUrl: 'https://via.placeholder.com/200?text=Mouse',
+      freeShipping: true
     },
     {
       id: 3,
       name: 'Monitor 24"',
       price: 45000,
       category: 'Electrónica',
-      stock: 5
+      stock: 5,
+      imageUrl: 'https://via.placeholder.com/200?text=Monitor',
+      freeShipping: true
     }
   ]);
 
