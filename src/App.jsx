@@ -22,30 +22,51 @@ function App() {
   const [products, setProducts] = useState([
     {
       id: 1,
+      name: 'Set De Herramientas Mecánicas Stanley 97-543 - 150 Piezas',
+      descripcion: 'Set de herramientas Stanley con 150 piezas, incluye llaves, destornilladores y más',
+      precioUnitario: 259000,
+      descuento: 42,
+      precioConDescuento: 150000, // 259000 * (1 - 42/100)
+      category: 'STANLEY',
+      stock: 8,
+      imageUrl: 'https://http2.mlstatic.com/D_NQ_NP_685251-MLA53885564900_022023-O.webp',
+      freeShipping: true
+    },
+    {
+      id: 2,
       name: 'Laptop HP',
-      price: 120000,
+      descripcion: 'Laptop HP con procesador Intel Core i5, 8GB RAM, 512GB SSD',
+      precioUnitario: 120000,
+      descuento: 10,
+      precioConDescuento: 108000, // 120000 * (1 - 10/100)
       category: 'Electrónica',
       stock: 10,
       imageUrl: 'https://ar-media.hptiendaenlinea.com/catalog/product/cache/b3b166914d87ce343d4dc5ec5117b502/1/_/1_2.jpg',
       freeShipping: true
     },
     {
-      id: 2,
+      id: 3,
       name: 'Mouse inalámbrico',
-      price: 5000,
+      descripcion: 'Mouse inalámbrico ergonómico con 6 botones y batería recargable',
+      precioUnitario: 5000,
+      descuento: 5,
+      precioConDescuento: 4750, // 5000 * (1 - 5/100)
       category: 'Accesorios',
       stock: 25,
       imageUrl: 'https://images.fravega.com/f500/6ee914b6ed6b30d8ae91a2157f367da0.jpg',
       freeShipping: true
     },
     {
-      id: 3,
+      id: 4,
       name: 'Monitor 24"',
-      price: 45000,
+      descripcion: 'Monitor LED Full HD 24 pulgadas, 75Hz, panel IPS con conectividad HDMI y VGA',
+      precioUnitario: 45000,
+      descuento: 0,
+      precioConDescuento: 45000, // 45000 * (1 - 0/100)
       category: 'Electrónica',
       stock: 5,
       imageUrl: 'https://fullh4rd.com.ar/img/productos/18/monitor-24-hikvision-dsd5024f2av2-fhd-100hz-vga-hdmi-0.jpg',
-      freeShipping: true
+      freeShipping: false
     }
   ]);
 
@@ -84,7 +105,8 @@ function App() {
      * */
     const productWithId = {
       ...newProduct,
-      id: products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1
+      id: products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1,
+      precioConDescuento: newProduct.precioUnitario * (1 - newProduct.descuento/100)
     };
     setProducts([...products, productWithId]);
     
