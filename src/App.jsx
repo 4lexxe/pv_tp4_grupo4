@@ -3,6 +3,7 @@ import './App.css'
 import ProductList from './components/ProductList'
 import ProductForm from './components/ProductForm'
 import Modal from './components/Modal'
+import SearchBar from './components/SearchBar'
 
 function App() {
   /***************************************
@@ -128,8 +129,9 @@ function App() {
         </div>
       )}
       
-      {/* Botón para abrir el modal */}
+      {/* Barra de búsqueda y botón para agregar producto */}
       <div className="action-buttons">
+        <SearchBar />
         <button className="btn-add-product" onClick={openModal}>
           Agregar Nuevo Producto
         </button>
