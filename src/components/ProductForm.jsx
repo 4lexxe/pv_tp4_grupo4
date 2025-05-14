@@ -3,7 +3,9 @@ import React, { useState } from 'react';
 const ProductForm = ({ onAddProduct, onCancel }) => {
   const [productData, setProductData] = useState({
     name: '',
-    price: '',
+    descripcion: '',
+    precioUnitario: '',
+    descuento: '0',
     category: '',
     stock: '',
     imageUrl: '',
@@ -26,7 +28,7 @@ const ProductForm = ({ onAddProduct, onCancel }) => {
     }
     
     // Asegurarse de que los valores numéricos sean válidos
-    if ((name === 'price' || name === 'stock') && value !== '') {
+    if ((name === 'precioUnitario' || name === 'descuento' || name === 'stock') && value !== '') {
       // Permitir solo valores numéricos válidos o campo vacío
       if (!/^\d*\.?\d*$/.test(value)) {
         return; // No actualizar si no es un número válido
@@ -45,7 +47,8 @@ const ProductForm = ({ onAddProduct, onCancel }) => {
     // Convertir valores numéricos
     const formattedProduct = {
       ...productData,
-      price: productData.price === '' ? 0 : Number(productData.price),
+      precioUnitario: productData.precioUnitario === '' ? 0 : Number(productData.precioUnitario),
+      descuento: productData.descuento === '' ? 0 : Number(productData.descuento),
       stock: productData.stock === '' ? 0 : Number(productData.stock),
       // Si no se proporciona una URL de imagen, usar un placeholder
       imageUrl: productData.imageUrl || 'https://via.placeholder.com/200'
@@ -57,7 +60,9 @@ const ProductForm = ({ onAddProduct, onCancel }) => {
     // Limpiar el formulario
     setProductData({
       name: '',
-      price: '',
+      descripcion: '',
+      precioUnitario: '',
+      descuento: '0',
       category: '',
       stock: '',
       imageUrl: '',
@@ -79,16 +84,40 @@ const ProductForm = ({ onAddProduct, onCancel }) => {
         />
       </div>
       
-      <div className="form-group">
-        <label htmlFor="price">Precio:</label>
+      <div className="form-group full-width">
+        <label htmlFor="descripcion">Descripción:</label>
         <input
           type="text"
-          id="price"
-          name="price"
-          value={productData.price}
+          id="descripcion"
+          name="descripcion"
+          value={productData.descripcion}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      
+      <div className="form-group">
+        <label htmlFor="precioUnitario">Precio Unitario:</label>
+        <input
+          type="text"
+          id="precioUnitario"
+          name="precioUnitario"
+          value={productData.precioUnitario}
           onChange={handleChange}
           placeholder="0"
           required
+        />
+      </div>
+      
+      <div className="form-group">
+        <label htmlFor="descuento">Descuento (%):</label>
+        <input
+          type="text"
+          id="descuento"
+          name="descuento"
+          value={productData.descuento}
+          onChange={handleChange}
+          placeholder="0"
         />
       </div>
       
