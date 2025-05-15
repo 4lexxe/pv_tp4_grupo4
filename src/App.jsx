@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import './App.css'
 import ProductList from './components/ProductList'
 import ProductForm from './components/ProductForm'
@@ -16,6 +16,20 @@ function App() {
   
   // Función para cerrar el modal
   const closeModal = () => setIsModalOpen(false);
+
+  /***************************************
+   * ESTADO DE BÚSQUEDA
+   ***************************************/
+  // Estado para almacenar el término de búsqueda actual
+  const [searchTerm, setSearchTerm] = useState('');
+
+  /**
+   * Función que maneja la actualización del término de búsqueda
+   * @param {string} term - El término de búsqueda ingresado por el usuario
+   */
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+  };
 
   /***************************************
    * ESTADO INICIAL DE PRODUCTOS
@@ -70,6 +84,28 @@ function App() {
       freeShipping: false
     }
   ]);
+
+  /***************************************
+   * FILTRADO DE PRODUCTOS
+   ***************************************/
+  /**
+   * Filtra los productos basados en el término de búsqueda
+   * Usa useMemo para mejorar el rendimiento evitando filtrados innecesarios
+   */
+  const filteredProducts = useMemo(() => {
+    // Si no hay término de búsqueda, devolver todos los productos
+    if (!searchTerm.trim()) return products;
+    
+    // Convertir el término de búsqueda a minúsculas para una comparación insensible a mayúsculas/minúsculas
+    const searchTermLower = searchTerm.toLowerCase().trim();
+    
+    // Filtrar productos que coincidan con el término de búsqueda en nombre, descripción o categoría
+    return products.filter(product => 
+      product.name.toLowerCase().includes(searchTermLower) ||
+      product.descripcion.toLowerCase().includes(searchTermLower) ||
+      (product.category && product.category.toLowerCase().includes(searchTermLower))
+    );
+  }, [products, searchTerm]);
 
   /***************************************
    * SISTEMA DE RETROALIMENTACIÓN
@@ -131,7 +167,7 @@ function App() {
       
       {/* Barra de búsqueda y botón para agregar producto */}
       <div className="action-buttons">
-        <SearchBar />
+        <SearchBar onSearch={handleSearch} />
         <button className="btn-add-product" onClick={openModal}>
           Agregar Nuevo Producto
         </button>
@@ -139,7 +175,19 @@ function App() {
       
       {/* Contenedor principal */}
       <div className="content-container">
-        <ProductList products={products} />
+        {/* Mostrar productos filtrados en lugar de todos los productos */}
+        <ProductList products={filteredProducts} />
+        
+        {/* Mostrar información sobre los resultados de búsqueda */}
+        {searchTerm.trim() && (
+          <div className="search-results-info">
+            {filteredProducts.length === 0 ? (
+              <p>No se encontraron productos para "{searchTerm}"</p>
+            ) : (
+              <p>Se encontraron {filteredProducts.length} productos para "{searchTerm}"</p>
+            )}
+          </div>
+        )}
       </div>
       
       {/* Modal con formulario */}

@@ -1,16 +1,37 @@
 import React, { useState } from 'react';
 
-const SearchBar = () => {
+/**
+ * Componente de barra de búsqueda que permite al usuario filtrar productos
+ * 
+ * @param {Object} props - Propiedades del componente
+ * @param {Function} props.onSearch - Función callback que recibe el término de búsqueda
+ * @returns {JSX.Element} Componente de barra de búsqueda
+ */
+const SearchBar = ({ onSearch }) => {
+  // Estado local para almacenar el término de búsqueda
   const [searchTerm, setSearchTerm] = useState('');
 
+  /**
+   * Maneja el envío del formulario de búsqueda
+   * @param {Event} e - Evento de formulario
+   */
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Por ahora no hacemos nada, sólo funcionalidad visual
+    // Enviamos el término de búsqueda al componente padre
+    onSearch(searchTerm);
     console.log('Búsqueda realizada:', searchTerm);
   };
 
+  /**
+   * Actualiza el estado local cuando cambia el input
+   * @param {Event} e - Evento de cambio de input
+   */
   const handleChange = (e) => {
-    setSearchTerm(e.target.value);
+    const newSearchTerm = e.target.value;
+    setSearchTerm(newSearchTerm);
+    
+    // Opcional: Búsqueda en tiempo real mientras el usuario escribe
+    onSearch(newSearchTerm);
   };
 
   return (
@@ -21,15 +42,11 @@ const SearchBar = () => {
         placeholder="Buscar productos, marcas y más..." 
         value={searchTerm}
         onChange={handleChange}
+        aria-label="Buscar productos"
       />
-      <button type="submit" className="search-button">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="11" cy="11" r="8"></circle>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-        </svg>
-      </button>
+      <button type="submit" className="search-button" aria-label="Realizar búsqueda">🔍</button>
     </form>
   );
 };
 
-export default SearchBar; 
+export default SearchBar;
