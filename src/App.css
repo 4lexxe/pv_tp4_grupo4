@@ -73,6 +73,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  flex: 1;
 }
 
 /* Estilos para el contenedor de acciones */
@@ -121,7 +122,7 @@ body {
 .search-button {
   width: 46px;
   border-radius: 0 4px 4px 0;
-  background-color: #fff;
+  background-color: #FFD700; /* Cambiado a amarillo */
   border: none;
   cursor: pointer;
   display: flex;
@@ -131,30 +132,33 @@ body {
   transition: all 0.2s;
   font-size: 20px;
   padding: 0;
+  color: #333; /* Texto oscuro para mejor contraste */
 }
 
 .search-button:hover {
-  background-color: #f5f5f5;
+  background-color: #FFC400; /* Amarillo más oscuro al pasar el mouse */
 }
 
 /* Botón para agregar producto */
 .btn-add-product {
-  background-color: #3483fa;
-  color: white;
+  background-color: #FFD700; /* Cambiado a amarillo */
+  color: #333; /* Texto oscuro para mejor contraste con fondo amarillo */
   border: none;
   padding: 0 24px;
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 600; /* Un poco más grueso para mejor legibilidad */
   height: 40px;
   display: flex;
   align-items: center;
   white-space: nowrap;
+  transition: all 0.2s;
 }
 
 .btn-add-product:hover {
-  background-color: #2968c8;
+  background-color: #FFC400; /* Amarillo más oscuro al pasar el mouse */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
@@ -537,13 +541,14 @@ h1 {
   position: absolute;
   top: 10px;
   left: 0;
-  background-color: #3483fa;
-  color: white;
+  background-color: #FFD700; /* Cambiado a amarillo */
+  color: #333; /* Texto oscuro para mejor contraste */
   font-size: 12px;
   font-weight: bold;
   padding: 4px 8px;
   z-index: 2;
   border-radius: 0 2px 2px 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .product-card {
@@ -676,6 +681,192 @@ h1 {
 /* Estilo cuando no hay resultados */
 .product-list:empty + .search-results-info p {
   color: #e53935;
+}
+
+/***************************************
+ * ESTILOS PARA EL PANEL DE FILTROS
+ ***************************************/
+.main-layout {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+}
+
+.filters-panel {
+  width: 250px;
+  min-width: 250px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  height: fit-content;
+  border: 1px solid #e6e6e6;
+  color: #333; /* Color de texto oscuro para el panel de filtros */
+}
+
+.filters-section {
+  margin-bottom: 20px;
+  border-bottom: 1px solid #eaeaea;
+  padding-bottom: 15px;
+}
+
+.filters-section:last-of-type {
+  border-bottom: none;
+}
+
+.filters-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #333; /* Asegurar que los títulos de filtros sean visibles */
+}
+
+/* Estilos para la lista de categorías */
+.category-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.category-item {
+  margin-bottom: 8px;
+}
+
+.category-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333; /* Color de texto para las etiquetas de categoría */
+}
+
+.category-checkbox {
+  margin-right: 8px;
+}
+
+.category-name {
+  flex-grow: 1;
+}
+
+.category-count {
+  color: #666;
+  font-size: 12px;
+}
+
+/* Estilos para el filtro de rango de precios */
+.price-range-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.price-range-slider {
+  width: 100%;
+  margin: 5px 0;
+}
+
+.price-inputs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.price-input-group {
+  flex: 1;
+}
+
+.price-input-group label {
+  display: block;
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.price-input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #333; /* Color de texto para los inputs */
+  background-color: #fff; /* Fondo blanco para inputs */
+}
+
+.price-separator {
+  font-size: 14px;
+  color: #666;
+}
+
+.btn-apply-price {
+  background-color: #FFD700; /* Cambiado a amarillo */
+  color: #333; /* Texto oscuro para mejor contraste */
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 8px;
+  transition: all 0.2s;
+}
+
+.btn-apply-price:hover {
+  background-color: #FFC400; /* Amarillo más oscuro al pasar el mouse */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para los filtros de envío y descuentos */
+.shipping-label, .discount-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #333; /* Asegurar que el texto sea visible */
+}
+
+.shipping-checkbox, .discount-radio {
+  margin-right: 8px;
+}
+
+.discount-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Botón para limpiar filtros */
+.btn-clear-filters {
+  width: 100%;
+  background-color: #f1f1f1;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.btn-clear-filters:hover {
+  background-color: #e0e0e0;
+}
+
+/***************************************
+ * ESTILOS RESPONSIVOS PARA FILTROS
+ ***************************************/
+@media (max-width: 768px) {
+  .main-layout {
+    flex-direction: column;
+  }
+  
+  .filters-panel {
+    width: 100%;
+    margin-bottom: 20px;
+  }
 }
 
 /***************************************

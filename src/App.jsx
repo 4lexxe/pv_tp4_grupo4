@@ -173,21 +173,103 @@ function App() {
         </button>
       </div>
       
-      {/* Contenedor principal */}
-      <div className="content-container">
-        {/* Mostrar productos filtrados en lugar de todos los productos */}
-        <ProductList products={filteredProducts} />
-        
-        {/* Mostrar información sobre los resultados de búsqueda */}
-        {searchTerm.trim() && (
-          <div className="search-results-info">
-            {filteredProducts.length === 0 ? (
-              <p>No se encontraron productos para "{searchTerm}"</p>
-            ) : (
-              <p>Se encontraron {filteredProducts.length} productos para "{searchTerm}"</p>
-            )}
+      {/* Contenedor principal con filtros laterales */}
+      <div className="main-layout">
+        {/* Panel de filtros */}
+        <aside className="filters-panel">
+          <div className="filters-section">
+            <h3 className="filters-title">Categorías</h3>
+            <ul className="category-list">
+              <li className="category-item">
+                <label className="category-label">
+                  <input type="checkbox" name="categoryStanley" className="category-checkbox" />
+                  <span className="category-name">STANLEY</span>
+                  <span className="category-count">(1)</span>
+                </label>
+              </li>
+              <li className="category-item">
+                <label className="category-label">
+                  <input type="checkbox" name="categoryElectronica" className="category-checkbox" />
+                  <span className="category-name">Electrónica</span>
+                  <span className="category-count">(2)</span>
+                </label>
+              </li>
+              <li className="category-item">
+                <label className="category-label">
+                  <input type="checkbox" name="categoryAccesorios" className="category-checkbox" />
+                  <span className="category-name">Accesorios</span>
+                  <span className="category-count">(1)</span>
+                </label>
+              </li>
+            </ul>
           </div>
-        )}
+          
+          <div className="filters-section">
+            <h3 className="filters-title">Precio</h3>
+            <div className="price-range-container">
+              <input 
+                type="range" 
+                min="0" 
+                max="300000" 
+                className="price-range-slider" 
+                aria-label="Rango de precio máximo" 
+              />
+              <div className="price-inputs">
+                <div className="price-input-group">
+                  <label htmlFor="minPrice">Mínimo</label>
+                  <input type="number" id="minPrice" placeholder="$ Mínimo" className="price-input" />
+                </div>
+                <span className="price-separator">-</span>
+                <div className="price-input-group">
+                  <label htmlFor="maxPrice">Máximo</label>
+                  <input type="number" id="maxPrice" placeholder="$ Máximo" className="price-input" />
+                </div>
+              </div>
+              <button type="button" className="btn-apply-price">Aplicar</button>
+            </div>
+          </div>
+          
+          <div className="filters-section">
+            <h3 className="filters-title">Envío</h3>
+            <label className="shipping-label">
+              <input type="checkbox" name="freeShipping" className="shipping-checkbox" />
+              <span className="shipping-text">Envío gratis</span>
+            </label>
+          </div>
+          
+          <div className="filters-section">
+            <h3 className="filters-title">Descuentos</h3>
+            <div className="discount-options">
+              <label className="discount-label">
+                <input type="radio" name="discount" value="all" className="discount-radio" defaultChecked />
+                <span className="discount-text">Todos los productos</span>
+              </label>
+              <label className="discount-label">
+                <input type="radio" name="discount" value="withDiscount" className="discount-radio" />
+                <span className="discount-text">Con descuento</span>
+              </label>
+            </div>
+          </div>
+          
+          <button type="button" className="btn-clear-filters">Limpiar filtros</button>
+        </aside>
+        
+        {/* Contenido principal */}
+        <div className="content-container">
+          {/* Mostrar productos filtrados en lugar de todos los productos */}
+          <ProductList products={filteredProducts} />
+          
+          {/* Mostrar información sobre los resultados de búsqueda */}
+          {searchTerm.trim() && (
+            <div className="search-results-info">
+              {filteredProducts.length === 0 ? (
+                <p>No se encontraron productos para "{searchTerm}"</p>
+              ) : (
+                <p>Se encontraron {filteredProducts.length} productos para "{searchTerm}"</p>
+              )}
+            </div>
+          )}
+        </div>
       </div>
       
       {/* Modal con formulario */}
