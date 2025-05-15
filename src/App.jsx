@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, useCallback } from 'react'
 import './App.css'
 import ProductList from './components/ProductList'
 import ProductForm from './components/ProductForm'
@@ -10,26 +10,22 @@ function App() {
    * ESTADO PARA EL MODAL
    ***************************************/
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // Estado para almacenar el producto que se está editando
   const [editingProduct, setEditingProduct] = useState(null);
   
-  // Función para abrir el modal en modo creación
-  const openAddModal = () => {
-    setEditingProduct(null); // Asegurarse de que no haya producto en edición
+  const openAddModal = useCallback(() => {
+    setEditingProduct(null);
     setIsModalOpen(true);
-  };
+  }, []);
   
-  // Función para abrir el modal en modo edición
-  const openEditModal = (product) => {
+  const openEditModal = useCallback((product) => {
     setEditingProduct(product);
     setIsModalOpen(true);
-  };
+  }, []);
   
-  // Función para cerrar el modal
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setIsModalOpen(false);
-    setEditingProduct(null); // Limpiar el producto en edición al cerrar
-  };
+    setEditingProduct(null);
+  }, []);
 
   /***************************************
    * ESTADO DE BÚSQUEDA Y FILTROS
@@ -42,13 +38,13 @@ function App() {
     sliderValue: 300000
   });
   const [freeShippingOnly, setFreeShippingOnly] = useState(false);
-  const [discountFilter, setDiscountFilter] = useState('all'); // 'all' o 'withDiscount'
+  const [discountFilter, setDiscountFilter] = useState('all');
 
-  const handleSearch = (term) => {
+  const handleSearch = useCallback((term) => {
     setSearchTerm(term);
-  };
+  }, []);
 
-  const handleCategoryChange = (e) => {
+  const handleCategoryChange = useCallback((e) => {
     const { name, checked } = e.target;
     const categoryName = name.replace('category', '');
     
@@ -57,18 +53,18 @@ function App() {
     } else {
       setSelectedCategories(prev => prev.filter(cat => cat !== categoryName));
     }
-  };
+  }, []);
 
-  const handleSliderChange = (e) => {
+  const handleSliderChange = useCallback((e) => {
     const value = e.target.value;
     setPriceRange(prev => ({
       ...prev,
       sliderValue: parseInt(value, 10),
       max: value
     }));
-  };
+  }, []);
 
-  const handlePriceInputChange = (e) => {
+  const handlePriceInputChange = useCallback((e) => {
     const { id, value } = e.target;
     const numericValue = value === '' ? '' : parseInt(value, 10);
     
@@ -77,27 +73,27 @@ function App() {
     } else if (id === 'maxPrice') {
       setPriceRange(prev => ({ ...prev, max: numericValue }));
     }
-  };
+  }, []);
 
-  const applyPriceFilter = () => {
+  const applyPriceFilter = useCallback(() => {
     console.log('Aplicando filtro de precio:', priceRange);
-  };
+  }, [priceRange]);
 
-  const handleFreeShippingChange = (e) => {
+  const handleFreeShippingChange = useCallback((e) => {
     setFreeShippingOnly(e.target.checked);
-  };
+  }, []);
 
-  const handleDiscountFilterChange = (e) => {
+  const handleDiscountFilterChange = useCallback((e) => {
     setDiscountFilter(e.target.value);
-  };
+  }, []);
 
-  const clearAllFilters = () => {
+  const clearAllFilters = useCallback(() => {
     setSelectedCategories([]);
     setPriceRange({ min: '', max: '', sliderValue: 300000 });
     setFreeShippingOnly(false);
     setDiscountFilter('all');
     setSearchTerm('');
-  };
+  }, []);
 
   /***************************************
    * CÁLCULO DE CATEGORÍAS ÚNICAS
@@ -216,7 +212,7 @@ function App() {
     visible: false
   });
 
-  const showFeedback = (message, type = 'success') => {
+  const showFeedback = useCallback((message, type = 'success') => {
     setFeedback({
       message,
       type,
@@ -226,65 +222,45 @@ function App() {
     setTimeout(() => {
       setFeedback(prev => ({ ...prev, visible: false }));
     }, 3000);
-  };
+  }, []);
 
   /***************************************
    * GESTIÓN DE PRODUCTOS
    ***************************************/
-  // Función para agregar un nuevo producto
-  const addProduct = (newProduct) => {
-    /* *
-     * Asignar un ID único al producto nuevo
-     * En una app real usaríamos una base de datos o UUID
-     * */
+  const addProduct = useCallback((newProduct) => {
     const productWithId = {
       ...newProduct,
-      id: products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1,
+      id: Math.max(...products.map(p => p.id), 0) + 1,
       precioConDescuento: newProduct.precioUnitario * (1 - newProduct.descuento/100)
     };
-    setProducts([...products, productWithId]);
     
-    // Mostrar mensaje de éxito
+    setProducts(prevProducts => [...prevProducts, productWithId]);
     showFeedback(`Producto "${newProduct.name}" agregado correctamente`);
-    
-    // Cerrar el modal después de agregar
     closeModal();
-  };
+  }, [products, showFeedback, closeModal]);
 
-  // Función para actualizar un producto existente
-  const updateProduct = (updatedProduct) => {
-    // Calcular el precio con descuento
+  const updateProduct = useCallback((updatedProduct) => {
     const productWithDiscountPrice = {
       ...updatedProduct,
       precioConDescuento: updatedProduct.precioUnitario * (1 - updatedProduct.descuento/100)
     };
     
-    // Actualizar la lista de productos
-    setProducts(products.map(product => 
-      product.id === productWithDiscountPrice.id ? productWithDiscountPrice : product
-    ));
+    setProducts(prevProducts => 
+      prevProducts.map(product => 
+        product.id === productWithDiscountPrice.id ? productWithDiscountPrice : product
+      )
+    );
     
-    // Mostrar mensaje de éxito
     showFeedback(`Producto "${updatedProduct.name}" actualizado correctamente`);
-    
-    // Cerrar el modal después de actualizar
     closeModal();
-  };
+  }, [showFeedback, closeModal]);
 
-  // Función para eliminar un producto
-  const deleteProduct = (productId) => {
-    // Filtrar los productos, eliminando el que coincide con el ID
-    const updatedProducts = products.filter(product => product.id !== productId);
-    
-    // Actualizar el estado con la nueva lista de productos
-    setProducts(updatedProducts);
-    
-    // Buscar el nombre del producto para mostrarlo en el mensaje
+  const deleteProduct = useCallback((productId) => {
     const productName = products.find(product => product.id === productId)?.name || "Producto";
     
-    // Mostrar mensaje de éxito
+    setProducts(prevProducts => prevProducts.filter(product => product.id !== productId));
     showFeedback(`Producto "${productName}" eliminado correctamente`, 'success');
-  };
+  }, [products, showFeedback]);
 
   useEffect(() => {
     const maxProductPrice = Math.max(...products.map(p => p.precioUnitario));
@@ -453,7 +429,6 @@ function App() {
         </div>
       </div>
       
-      {/* Modal con formulario - ahora con soporte para edición */}
       <Modal 
         isOpen={isModalOpen} 
         onClose={closeModal} 
