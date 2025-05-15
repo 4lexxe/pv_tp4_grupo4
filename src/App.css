@@ -761,8 +761,42 @@ h1 {
 }
 
 .price-range-slider {
+  -webkit-appearance: none;
   width: 100%;
-  margin: 5px 0;
+  height: 6px;
+  border-radius: 5px;
+  background: #eaeaea;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+  margin: 10px 0;
+}
+
+.price-range-slider:hover {
+  opacity: 1;
+}
+
+.price-range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #FFD700;
+  cursor: pointer;
+  border: 1px solid rgba(0,0,0,0.1);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.price-range-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #FFD700;
+  cursor: pointer;
+  border: 1px solid rgba(0,0,0,0.1);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
 .price-inputs {
@@ -816,6 +850,11 @@ h1 {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+.btn-apply-price:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 /* Estilos para los filtros de envío y descuentos */
 .shipping-label, .discount-label {
   display: flex;
@@ -853,6 +892,50 @@ h1 {
 
 .btn-clear-filters:hover {
   background-color: #e0e0e0;
+}
+
+/* Estilos para filtros activos */
+.filters-panel .category-checkbox:checked + .category-name,
+.filters-panel .shipping-checkbox:checked + .shipping-text,
+.filters-panel .discount-radio:checked + .discount-text {
+  font-weight: 600;
+  color: #000;
+}
+
+/* Resaltar la sección de filtros con filtros activos */
+.filters-section.has-active-filter .filters-title {
+  color: #000;
+}
+
+/* Mostrar filtros activos */
+.active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.active-filter-tag {
+  background-color: #F5F5F5;
+  border: 1px solid #E5E5E5;
+  border-radius: 30px;
+  padding: 4px 10px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  color: #333;
+}
+
+.active-filter-tag .remove-filter {
+  margin-left: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+  color: #999;
+}
+
+.active-filter-tag .remove-filter:hover {
+  color: #333;
 }
 
 /***************************************
