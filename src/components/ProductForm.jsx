@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const ProductForm = ({ onAddProduct, onCancel }) => {
+const ProductForm = ({ onAddProduct, onUpdateProduct, productToEdit, onCancel }) => {
+  // Estado inicial del formulario - vacío para un nuevo producto o con datos para edición
   const [productData, setProductData] = useState({
     name: '',
     descripcion: '',
@@ -11,6 +12,25 @@ const ProductForm = ({ onAddProduct, onCancel }) => {
     imageUrl: '',
     freeShipping: false
   });
+
+  // Modo edición o creación
+  const isEditMode = !!productToEdit;
+
+  // Cargar datos del producto si estamos en modo edición
+  useEffect(() => {
+    if (productToEdit) {
+      setProductData({
+        name: productToEdit.name,
+        descripcion: productToEdit.descripcion,
+        precioUnitario: productToEdit.precioUnitario.toString(),
+        descuento: productToEdit.descuento.toString(),
+        category: productToEdit.category,
+        stock: productToEdit.stock.toString(),
+        imageUrl: productToEdit.imageUrl,
+        freeShipping: productToEdit.freeShipping
+      });
+    }
+  }, [productToEdit]);
 
   /***************************************
    * MANEJO DE EVENTOS DEL FORMULARIO
@@ -54,8 +74,17 @@ const ProductForm = ({ onAddProduct, onCancel }) => {
       imageUrl: productData.imageUrl || 'https://via.placeholder.com/200'
     };
     
-    // Llamar a la función proporcionada por el componente padre
-    onAddProduct(formattedProduct);
+    // Llamar a la función apropiada según el modo
+    if (isEditMode) {
+      // Conservar el ID original y actualizar el producto
+      onUpdateProduct({
+        ...formattedProduct,
+        id: productToEdit.id
+      });
+    } else {
+      // Crear nuevo producto
+      onAddProduct(formattedProduct);
+    }
     
     // Limpiar el formulario
     setProductData({
@@ -172,7 +201,9 @@ const ProductForm = ({ onAddProduct, onCancel }) => {
       </div>
       
       <div className="form-actions">
-        <button type="submit" className="btn-submit">Guardar</button>
+        <button type="submit" className="btn-submit">
+          {isEditMode ? 'Actualizar' : 'Guardar'}
+        </button>
         {onCancel && (
           <button type="button" className="btn-cancel" onClick={onCancel}>
             Cancelar
@@ -183,4 +214,4 @@ const ProductForm = ({ onAddProduct, onCancel }) => {
   );
 };
 
-export default ProductForm; 
+export default ProductForm;

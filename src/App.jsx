@@ -10,12 +10,26 @@ function App() {
    * ESTADO PARA EL MODAL
    ***************************************/
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  // Función para abrir el modal
-  const openModal = () => setIsModalOpen(true);
+  // Estado para almacenar el producto que se está editando
+  const [editingProduct, setEditingProduct] = useState(null);
+  
+  // Función para abrir el modal en modo creación
+  const openAddModal = () => {
+    setEditingProduct(null); // Asegurarse de que no haya producto en edición
+    setIsModalOpen(true);
+  };
+  
+  // Función para abrir el modal en modo edición
+  const openEditModal = (product) => {
+    setEditingProduct(product);
+    setIsModalOpen(true);
+  };
   
   // Función para cerrar el modal
-  const closeModal = () => setIsModalOpen(false);
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setEditingProduct(null); // Limpiar el producto en edición al cerrar
+  };
 
   /***************************************
    * ESTADO DE BÚSQUEDA Y FILTROS
@@ -217,14 +231,43 @@ function App() {
   /***************************************
    * GESTIÓN DE PRODUCTOS
    ***************************************/
+  // Función para agregar un nuevo producto
   const addProduct = (newProduct) => {
+    /* *
+     * Asignar un ID único al producto nuevo
+     * En una app real usaríamos una base de datos o UUID
+     * */
     const productWithId = {
       ...newProduct,
       id: products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1,
       precioConDescuento: newProduct.precioUnitario * (1 - newProduct.descuento/100)
     };
     setProducts([...products, productWithId]);
+    
+    // Mostrar mensaje de éxito
     showFeedback(`Producto "${newProduct.name}" agregado correctamente`);
+    
+    // Cerrar el modal después de agregar
+    closeModal();
+  };
+
+  // Función para actualizar un producto existente
+  const updateProduct = (updatedProduct) => {
+    // Calcular el precio con descuento
+    const productWithDiscountPrice = {
+      ...updatedProduct,
+      precioConDescuento: updatedProduct.precioUnitario * (1 - updatedProduct.descuento/100)
+    };
+    
+    // Actualizar la lista de productos
+    setProducts(products.map(product => 
+      product.id === productWithDiscountPrice.id ? productWithDiscountPrice : product
+    ));
+    
+    // Mostrar mensaje de éxito
+    showFeedback(`Producto "${updatedProduct.name}" actualizado correctamente`);
+    
+    // Cerrar el modal después de actualizar
     closeModal();
   };
 
@@ -248,7 +291,7 @@ function App() {
       
       <div className="action-buttons">
         <SearchBar onSearch={handleSearch} />
-        <button className="btn-add-product" onClick={openModal}>
+        <button className="btn-add-product" onClick={openAddModal}>
           Agregar Nuevo Producto
         </button>
       </div>
@@ -375,7 +418,10 @@ function App() {
         </aside>
         
         <div className="content-container">
-          <ProductList products={filteredProducts} />
+          <ProductList 
+            products={filteredProducts} 
+            onEditProduct={openEditModal} 
+          />
           
           {(searchTerm.trim() || selectedCategories.length > 0 || 
             priceRange.min !== '' || priceRange.max !== '' || 
@@ -391,13 +437,16 @@ function App() {
         </div>
       </div>
       
+      {/* Modal con formulario - ahora con soporte para edición */}
       <Modal 
         isOpen={isModalOpen} 
         onClose={closeModal} 
-        title="Agregar Nuevo Producto"
+        title={editingProduct ? `Editar: ${editingProduct.name}` : "Agregar Nuevo Producto"}
       >
         <ProductForm 
-          onAddProduct={addProduct} 
+          onAddProduct={addProduct}
+          onUpdateProduct={updateProduct}
+          productToEdit={editingProduct}
           onCancel={closeModal} 
         />
       </Modal>

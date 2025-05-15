@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ProductList = ({ products }) => {
+const ProductList = ({ products, onEditProduct }) => {
   return (
     <div className="product-list">
       <h2>Lista de Productos</h2>
@@ -69,6 +69,15 @@ const ProductList = ({ products }) => {
                 <div className="product-stock">
                   {product.stock > 0 ? `${product.stock} disponibles` : 'Sin stock'}
                 </div>
+                
+                {/* Botón para editar producto */}
+                <button 
+                  className="btn-edit-product"
+                  onClick={() => onEditProduct(product)}
+                  aria-label={`Editar ${product.name}`}
+                >
+                  <span className="edit-icon">✏️</span> Editar
+                </button>
               </div>
             </div>
           ))}
@@ -78,4 +87,4 @@ const ProductList = ({ products }) => {
   );
 };
 
-export default ProductList; 
+export default ProductList;
