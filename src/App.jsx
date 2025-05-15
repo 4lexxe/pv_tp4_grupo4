@@ -271,6 +271,21 @@ function App() {
     closeModal();
   };
 
+  // Función para eliminar un producto
+  const deleteProduct = (productId) => {
+    // Filtrar los productos, eliminando el que coincide con el ID
+    const updatedProducts = products.filter(product => product.id !== productId);
+    
+    // Actualizar el estado con la nueva lista de productos
+    setProducts(updatedProducts);
+    
+    // Buscar el nombre del producto para mostrarlo en el mensaje
+    const productName = products.find(product => product.id === productId)?.name || "Producto";
+    
+    // Mostrar mensaje de éxito
+    showFeedback(`Producto "${productName}" eliminado correctamente`, 'success');
+  };
+
   useEffect(() => {
     const maxProductPrice = Math.max(...products.map(p => p.precioUnitario));
     setPriceRange(prev => ({
@@ -419,8 +434,9 @@ function App() {
         
         <div className="content-container">
           <ProductList 
-            products={filteredProducts} 
-            onEditProduct={openEditModal} 
+            products={filteredProducts}
+            onEditProduct={openEditModal}
+            onDeleteProduct={deleteProduct}
           />
           
           {(searchTerm.trim() || selectedCategories.length > 0 || 

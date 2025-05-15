@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ProductList = ({ products, onEditProduct }) => {
+const ProductList = ({ products, onEditProduct, onDeleteProduct }) => {
   return (
     <div className="product-list">
       <h2>Lista de Productos</h2>
@@ -70,14 +70,29 @@ const ProductList = ({ products, onEditProduct }) => {
                   {product.stock > 0 ? `${product.stock} disponibles` : 'Sin stock'}
                 </div>
                 
-                {/* Botón para editar producto */}
-                <button 
-                  className="btn-edit-product"
-                  onClick={() => onEditProduct(product)}
-                  aria-label={`Editar ${product.name}`}
-                >
-                  <span className="edit-icon">✏️</span> Editar
-                </button>
+                {/* Botones de acción para el producto */}
+                <div className="product-actions">
+                  <button 
+                    className="btn-edit-product"
+                    onClick={() => onEditProduct(product)}
+                    aria-label={`Editar ${product.name}`}
+                  >
+                    <span className="edit-icon">✏️</span> Editar
+                  </button>
+                  
+                  <button 
+                    className="btn-delete-product"
+                    onClick={() => {
+                      // Confirmación antes de eliminar
+                      if (window.confirm(`¿Estás seguro de que deseas eliminar el producto "${product.name}"?`)) {
+                        onDeleteProduct(product.id);
+                      }
+                    }}
+                    aria-label={`Eliminar ${product.name}`}
+                  >
+                    <span className="delete-icon">🗑️</span> Eliminar
+                  </button>
+                </div>
               </div>
             </div>
           ))}

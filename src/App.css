@@ -161,6 +161,13 @@ body {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+/* Estilos para los botones de acción del producto */
+.product-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
 /* Estilos para el botón de editar producto */
 .btn-edit-product {
   display: flex;
@@ -174,8 +181,7 @@ body {
   padding: 6px 10px;
   font-size: 14px;
   cursor: pointer;
-  margin-top: 10px;
-  width: 100%;
+  flex: 1;
   transition: all 0.2s;
 }
 
@@ -185,6 +191,32 @@ body {
 }
 
 .edit-icon {
+  font-size: 16px;
+}
+
+/* Estilos para el botón de eliminar producto */
+.btn-delete-product {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  background-color: #f8d7da;
+  color: #721c24;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  flex: 1;
+  transition: all 0.2s;
+}
+
+.btn-delete-product:hover {
+  background-color: #f5c6cb;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.delete-icon {
   font-size: 16px;
 }
 
