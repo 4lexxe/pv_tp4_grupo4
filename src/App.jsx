@@ -1,154 +1,121 @@
-import { useState, useMemo, useEffect, useCallback } from 'react'
+import {useMemo, useEffect  } from 'react'
 import './App.css'
 import ProductList from './components/ProductList'
 import ProductForm from './components/ProductForm'
 import Modal from './components/Modal'
 import SearchBar from './components/SearchBar'
-
+import {useProducts} from './customHooks/useProducts'
+import {useFeedback} from './customHooks/useFeedback'
+import {useModal} from './customHooks/useModal'
+import {useFilterProducts} from './customHooks/useFilterProducts'
+import { useState } from 'react'
 function App() {
   /***************************************
-   * ESTADO PARA EL MODAL
+   * ESTADO DE PRODUCTOS
    ***************************************/
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingProduct, setEditingProduct] = useState(null);
-  
-  const openAddModal = useCallback(() => {
-    setEditingProduct(null);
-    setIsModalOpen(true);
-  }, []);
-  
-  const openEditModal = useCallback((product) => {
-    setEditingProduct(product);
-    setIsModalOpen(true);
-  }, []);
-  
-  const closeModal = useCallback(() => {
-    setIsModalOpen(false);
-    setEditingProduct(null);
-  }, []);
-
-  /***************************************
+  const [products, setProducts] = useState([
+        {
+          id: 1,
+          name: 'Set De Herramientas Mecánicas Stanley 97-543 - 150 Piezas',
+          descripcion: 'Set de herramientas Stanley con 150 piezas, incluye llaves, destornilladores y más',
+          precioUnitario: 259000,
+          descuento: 42,
+          precioConDescuento: 150000,
+          category: 'STANLEY',
+          stock: 8,
+          imageUrl: 'https://http2.mlstatic.com/D_NQ_NP_685251-MLA53885564900_022023-O.webp',
+          freeShipping: true
+        },
+        {
+          id: 2,
+          name: 'Laptop HP',
+          descripcion: 'Laptop HP con procesador Intel Core i5, 8GB RAM, 512GB SSD',
+          precioUnitario: 120000,
+          descuento: 10,
+          precioConDescuento: 108000,
+          category: 'Electrónica',
+          stock: 10,
+          imageUrl: 'https://ar-media.hptiendaenlinea.com/catalog/product/cache/b3b166914d87ce343d4dc5ec5117b502/1/_/1_2.jpg',
+          freeShipping: true
+        },
+        {
+          id: 3,
+          name: 'Mouse inalámbrico',
+          descripcion: 'Mouse inalámbrico ergonómico con 6 botones y batería recargable',
+          precioUnitario: 5000,
+          descuento: 5,
+          precioConDescuento: 4750,
+          category: 'Accesorios',
+          stock: 25,
+          imageUrl: 'https://images.fravega.com/f500/6ee914b6ed6b30d8ae91a2157f367da0.jpg',
+          freeShipping: true
+        },
+        {
+          id: 4,
+          name: 'Monitor 24"',
+          descripcion: 'Monitor LED Full HD 24 pulgadas, 75Hz, panel IPS con conectividad HDMI y VGA',
+          precioUnitario: 45000,
+          descuento: 0,
+          precioConDescuento: 45000,
+          category: 'Electrónica',
+          stock: 5,
+          imageUrl: 'https://fullh4rd.com.ar/img/productos/18/monitor-24-hikvision-dsd5024f2av2-fhd-100hz-vga-hdmi-0.jpg',
+          freeShipping: false
+        }
+  ]);
+   /***************************************
    * ESTADO DE BÚSQUEDA Y FILTROS
    ***************************************/
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [priceRange, setPriceRange] = useState({
-    min: '',
-    max: '',
-    sliderValue: 300000
+      min: '',
+      max: '',
+      sliderValue: 300000
   });
   const [freeShippingOnly, setFreeShippingOnly] = useState(false);
   const [discountFilter, setDiscountFilter] = useState('all');
-
-  const handleSearch = useCallback((term) => {
-    setSearchTerm(term);
-  }, []);
-
-  const handleCategoryChange = useCallback((e) => {
-    const { name, checked } = e.target;
-    const categoryName = name.replace('category', '');
-    
-    if (checked) {
-      setSelectedCategories(prev => [...prev, categoryName]);
-    } else {
-      setSelectedCategories(prev => prev.filter(cat => cat !== categoryName));
-    }
-  }, []);
-
-  const handleSliderChange = useCallback((e) => {
-    const value = e.target.value;
-    setPriceRange(prev => ({
-      ...prev,
-      sliderValue: parseInt(value, 10),
-      max: value
-    }));
-  }, []);
-
-  const handlePriceInputChange = useCallback((e) => {
-    const { id, value } = e.target;
-    const numericValue = value === '' ? '' : parseInt(value, 10);
-    
-    if (id === 'minPrice') {
-      setPriceRange(prev => ({ ...prev, min: numericValue }));
-    } else if (id === 'maxPrice') {
-      setPriceRange(prev => ({ ...prev, max: numericValue }));
-    }
-  }, []);
-
-  const applyPriceFilter = useCallback(() => {
-    console.log('Aplicando filtro de precio:', priceRange);
-  }, [priceRange]);
-
-  const handleFreeShippingChange = useCallback((e) => {
-    setFreeShippingOnly(e.target.checked);
-  }, []);
-
-  const handleDiscountFilterChange = useCallback((e) => {
-    setDiscountFilter(e.target.value);
-  }, []);
-
-  const clearAllFilters = useCallback(() => {
-    setSelectedCategories([]);
-    setPriceRange({ min: '', max: '', sliderValue: 300000 });
-    setFreeShippingOnly(false);
-    setDiscountFilter('all');
-    setSearchTerm('');
-  }, []);
-
+  /***************************************
+   * ESTADO DE RETROALIMENTACIÓN
+   ***************************************/
+  const [feedback, setFeedback] = useState({
+          message: '',
+          type: '',
+          visible: false
+  });
+  /***************************************
+   * ESTADO PARA EL MODAL
+   ***************************************/
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingProduct, setEditingProduct] = useState(null);
+  /***************************************
+   * SISTEMA DE RETROALIMENTACIÓN
+   ***************************************/
+  const {showFeedback} = useFeedback({setFeedback});
+  /***************************************
+   * GESTIÓN DEL MODAL
+   * ***************************************/
+  const {openAddModal, openEditModal, closeModal} = useModal({isModalOpen, setIsModalOpen, setEditingProduct});
+  /***************************************
+   * GESTIÓN DE PRODUCTOS
+   ***************************************/
+  const {addProduct, updateProduct, deleteProduct} = useProducts({products, setProducts, showFeedback, closeModal});
+   /***************************************
+   * FILTRADO DE PRODUCTOS
+   ***************************************/
+  const {
+        handleSearch,
+        handleCategoryChange,
+        handleSliderChange,
+        handlePriceInputChange,
+        applyPriceFilter,
+        handleFreeShippingChange,
+        handleDiscountFilterChange,
+        clearAllFilters,
+        filteredProducts} = useFilterProducts({products, setProducts, searchTerm, selectedCategories, priceRange, freeShippingOnly, discountFilter, setPriceRange, setSelectedCategories, setSearchTerm, setFreeShippingOnly, setDiscountFilter, setFeedback, showFeedback});
   /***************************************
    * CÁLCULO DE CATEGORÍAS ÚNICAS
    ***************************************/
-  const [products, setProducts] = useState([
-    {
-      id: 1,
-      name: 'Set De Herramientas Mecánicas Stanley 97-543 - 150 Piezas',
-      descripcion: 'Set de herramientas Stanley con 150 piezas, incluye llaves, destornilladores y más',
-      precioUnitario: 259000,
-      descuento: 42,
-      precioConDescuento: 150000,
-      category: 'STANLEY',
-      stock: 8,
-      imageUrl: 'https://http2.mlstatic.com/D_NQ_NP_685251-MLA53885564900_022023-O.webp',
-      freeShipping: true
-    },
-    {
-      id: 2,
-      name: 'Laptop HP',
-      descripcion: 'Laptop HP con procesador Intel Core i5, 8GB RAM, 512GB SSD',
-      precioUnitario: 120000,
-      descuento: 10,
-      precioConDescuento: 108000,
-      category: 'Electrónica',
-      stock: 10,
-      imageUrl: 'https://ar-media.hptiendaenlinea.com/catalog/product/cache/b3b166914d87ce343d4dc5ec5117b502/1/_/1_2.jpg',
-      freeShipping: true
-    },
-    {
-      id: 3,
-      name: 'Mouse inalámbrico',
-      descripcion: 'Mouse inalámbrico ergonómico con 6 botones y batería recargable',
-      precioUnitario: 5000,
-      descuento: 5,
-      precioConDescuento: 4750,
-      category: 'Accesorios',
-      stock: 25,
-      imageUrl: 'https://images.fravega.com/f500/6ee914b6ed6b30d8ae91a2157f367da0.jpg',
-      freeShipping: true
-    },
-    {
-      id: 4,
-      name: 'Monitor 24"',
-      descripcion: 'Monitor LED Full HD 24 pulgadas, 75Hz, panel IPS con conectividad HDMI y VGA',
-      precioUnitario: 45000,
-      descuento: 0,
-      precioConDescuento: 45000,
-      category: 'Electrónica',
-      stock: 5,
-      imageUrl: 'https://fullh4rd.com.ar/img/productos/18/monitor-24-hikvision-dsd5024f2av2-fhd-100hz-vga-hdmi-0.jpg',
-      freeShipping: false
-    }
-  ]);
-
   const uniqueCategories = useMemo(() => {
     const categories = {};
     products.forEach(product => {
@@ -159,116 +126,13 @@ function App() {
     return categories;
   }, [products]);
 
-  /***************************************
-   * FILTRADO DE PRODUCTOS
-   ***************************************/
-  const filteredProducts = useMemo(() => {
-    return products.filter(product => {
-      const matchesSearchTerm = !searchTerm.trim() || 
-        product.name.toLowerCase().includes(searchTerm.toLowerCase().trim()) ||
-        product.descripcion.toLowerCase().includes(searchTerm.toLowerCase().trim()) ||
-        (product.category && product.category.toLowerCase().includes(searchTerm.toLowerCase().trim()));
-      
-      if (!matchesSearchTerm) return false;
-      
-      const matchesCategory = selectedCategories.length === 0 || 
-        selectedCategories.some(cat => 
-          product.category && product.category.toLowerCase().includes(cat.toLowerCase())
-        );
-      
-      if (!matchesCategory) return false;
-      
-      const price = product.descuento > 0 ? product.precioConDescuento : product.precioUnitario;
-      const matchesMinPrice = priceRange.min === '' || price >= priceRange.min;
-      const matchesMaxPrice = priceRange.max === '' || price <= priceRange.max;
-      
-      if (!matchesMinPrice || !matchesMaxPrice) return false;
-      
-      const matchesFreeShipping = !freeShippingOnly || product.freeShipping;
-      
-      if (!matchesFreeShipping) return false;
-      
-      const matchesDiscount = discountFilter === 'all' || 
-        (discountFilter === 'withDiscount' && product.descuento > 0);
-      
-      return matchesDiscount;
-    });
-  }, [
-    products, 
-    searchTerm, 
-    selectedCategories, 
-    priceRange.min, 
-    priceRange.max, 
-    freeShippingOnly, 
-    discountFilter
-  ]);
-
-  /***************************************
-   * SISTEMA DE RETROALIMENTACIÓN
-   ***************************************/
-  const [feedback, setFeedback] = useState({
-    message: '',
-    type: '',
-    visible: false
-  });
-
-  const showFeedback = useCallback((message, type = 'success') => {
-    setFeedback({
-      message,
-      type,
-      visible: true
-    });
-
-    setTimeout(() => {
-      setFeedback(prev => ({ ...prev, visible: false }));
-    }, 3000);
-  }, []);
-
-  /***************************************
-   * GESTIÓN DE PRODUCTOS
-   ***************************************/
-  const addProduct = useCallback((newProduct) => {
-    const productWithId = {
-      ...newProduct,
-      id: Math.max(...products.map(p => p.id), 0) + 1,
-      precioConDescuento: newProduct.precioUnitario * (1 - newProduct.descuento/100)
-    };
-    
-    setProducts(prevProducts => [...prevProducts, productWithId]);
-    showFeedback(`Producto "${newProduct.name}" agregado correctamente`);
-    closeModal();
-  }, [products, showFeedback, closeModal]);
-
-  const updateProduct = useCallback((updatedProduct) => {
-    const productWithDiscountPrice = {
-      ...updatedProduct,
-      precioConDescuento: updatedProduct.precioUnitario * (1 - updatedProduct.descuento/100)
-    };
-    
-    setProducts(prevProducts => 
-      prevProducts.map(product => 
-        product.id === productWithDiscountPrice.id ? productWithDiscountPrice : product
-      )
-    );
-    
-    showFeedback(`Producto "${updatedProduct.name}" actualizado correctamente`);
-    closeModal();
-  }, [showFeedback, closeModal]);
-
-  const deleteProduct = useCallback((productId) => {
-    const productName = products.find(product => product.id === productId)?.name || "Producto";
-    
-    setProducts(prevProducts => prevProducts.filter(product => product.id !== productId));
-    showFeedback(`Producto "${productName}" eliminado correctamente`, 'success');
-  }, [products, showFeedback]);
-
   useEffect(() => {
     const maxProductPrice = Math.max(...products.map(p => p.precioUnitario));
     setPriceRange(prev => ({
       ...prev,
       sliderValue: maxProductPrice > 0 ? maxProductPrice : 300000
     }));
-  }, [products]);
+  }, [products, setPriceRange]);
 
   return (
     <div className="app-container">

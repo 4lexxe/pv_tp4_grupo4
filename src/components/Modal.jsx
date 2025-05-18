@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
  * COMPONENTE MODAL REUTILIZABLE
  ***************************************/
 const Modal = ({ isOpen, onClose, title, children }) => {
+  
   // Prevenir el scroll del body cuando el modal está abierto
   useEffect(() => {
     if (isOpen) {
