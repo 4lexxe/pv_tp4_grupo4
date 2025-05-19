@@ -1,4 +1,3 @@
-import {useMemo, useEffect  } from 'react'
 import './App.css'
 import ProductList from './components/ProductList'
 import ProductForm from './components/ProductForm'
@@ -9,6 +8,7 @@ import {useFeedback} from './customHooks/useFeedback'
 import {useModal} from './customHooks/useModal'
 import {useFilterProducts} from './customHooks/useFilterProducts'
 import { useState } from 'react'
+import ProductFilters from './components/ProductFilters'
 function App() {
   /***************************************
    * ESTADO DE PRODUCTOS
@@ -68,14 +68,11 @@ function App() {
    ***************************************/
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategories, setSelectedCategories] = useState([]);
-  const [priceRange, setPriceRange] = useState({
-      min: '',
-      max: '',
-      sliderValue: 300000
-  });
+  const [priceRange, setPriceRange] = useState({ min: '', max: '', sliderValue: 300000 });
   const [freeShippingOnly, setFreeShippingOnly] = useState(false);
   const [discountFilter, setDiscountFilter] = useState('all');
-  /***************************************
+
+   /***************************************
    * ESTADO DE RETROALIMENTACIÓN
    ***************************************/
   const [feedback, setFeedback] = useState({
@@ -83,11 +80,40 @@ function App() {
           type: '',
           visible: false
   });
-  /***************************************
+
+   /***************************************
    * ESTADO PARA EL MODAL
    ***************************************/
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
+   /***************************************
+   * FILTRADO DE PRODUCTOS
+   ***************************************/
+  const {
+    filteredProducts,
+    handleSearch,
+    handleCategoryChange,
+    handleSliderChange,
+    handlePriceInputChange,
+    applyPriceFilter,
+    handleFreeShippingChange,
+    handleDiscountFilterChange,
+    clearAllFilters
+  } = useFilterProducts({
+    products,
+    searchTerm,
+    selectedCategories,
+    priceRange,
+    freeShippingOnly,
+    discountFilter,
+    setSearchTerm,
+    setSelectedCategories,
+    setPriceRange,
+    setFreeShippingOnly,
+    setDiscountFilter
+  });
+ 
+ 
   /***************************************
    * SISTEMA DE RETROALIMENTACIÓN
    ***************************************/
@@ -100,39 +126,7 @@ function App() {
    * GESTIÓN DE PRODUCTOS
    ***************************************/
   const {addProduct, updateProduct, deleteProduct} = useProducts({products, setProducts, showFeedback, closeModal});
-   /***************************************
-   * FILTRADO DE PRODUCTOS
-   ***************************************/
-  const {
-        handleSearch,
-        handleCategoryChange,
-        handleSliderChange,
-        handlePriceInputChange,
-        applyPriceFilter,
-        handleFreeShippingChange,
-        handleDiscountFilterChange,
-        clearAllFilters,
-        filteredProducts} = useFilterProducts({products, setProducts, searchTerm, selectedCategories, priceRange, freeShippingOnly, discountFilter, setPriceRange, setSelectedCategories, setSearchTerm, setFreeShippingOnly, setDiscountFilter, setFeedback, showFeedback});
-  /***************************************
-   * CÁLCULO DE CATEGORÍAS ÚNICAS
-   ***************************************/
-  const uniqueCategories = useMemo(() => {
-    const categories = {};
-    products.forEach(product => {
-      if (product.category) {
-        categories[product.category] = (categories[product.category] || 0) + 1;
-      }
-    });
-    return categories;
-  }, [products]);
-
-  useEffect(() => {
-    const maxProductPrice = Math.max(...products.map(p => p.precioUnitario));
-    setPriceRange(prev => ({
-      ...prev,
-      sliderValue: maxProductPrice > 0 ? maxProductPrice : 300000
-    }));
-  }, [products, setPriceRange]);
+ 
 
   return (
     <div className="app-container">
@@ -152,125 +146,21 @@ function App() {
       </div>
       
       <div className="main-layout">
-        <aside className="filters-panel">
-          <div className="filters-section">
-            <h3 className="filters-title">Categorías</h3>
-            <ul className="category-list">
-              {Object.entries(uniqueCategories).map(([category, count]) => (
-                <li key={category} className="category-item">
-                  <label className="category-label">
-                    <input 
-                      type="checkbox" 
-                      name={`category${category}`} 
-                      className="category-checkbox"
-                      checked={selectedCategories.includes(category)}
-                      onChange={handleCategoryChange}
-                    />
-                    <span className="category-name">{category}</span>
-                    <span className="category-count">({count})</span>
-                  </label>
-                </li>
-              ))}
-            </ul>
-          </div>
-          
-          <div className="filters-section">
-            <h3 className="filters-title">Precio</h3>
-            <div className="price-range-container">
-              <input 
-                type="range" 
-                min="0" 
-                max={products.length > 0 ? Math.max(...products.map(p => p.precioUnitario)) : 300000} 
-                value={priceRange.sliderValue}
-                className="price-range-slider" 
-                aria-label="Rango de precio máximo"
-                onChange={handleSliderChange}
-              />
-              <div className="price-inputs">
-                <div className="price-input-group">
-                  <label htmlFor="minPrice">Mínimo</label>
-                  <input 
-                    type="number" 
-                    id="minPrice" 
-                    placeholder="$ Mínimo" 
-                    className="price-input"
-                    value={priceRange.min}
-                    onChange={handlePriceInputChange}
-                  />
-                </div>
-                <span className="price-separator">-</span>
-                <div className="price-input-group">
-                  <label htmlFor="maxPrice">Máximo</label>
-                  <input 
-                    type="number" 
-                    id="maxPrice" 
-                    placeholder="$ Máximo" 
-                    className="price-input"
-                    value={priceRange.max === '' ? priceRange.max : priceRange.max}
-                    onChange={handlePriceInputChange}
-                  />
-                </div>
-              </div>
-              <button 
-                type="button" 
-                className="btn-apply-price"
-                onClick={applyPriceFilter}
-              >
-                Aplicar
-              </button>
-            </div>
-          </div>
-          
-          <div className="filters-section">
-            <h3 className="filters-title">Envío</h3>
-            <label className="shipping-label">
-              <input 
-                type="checkbox" 
-                name="freeShipping" 
-                className="shipping-checkbox"
-                checked={freeShippingOnly}
-                onChange={handleFreeShippingChange}
-              />
-              <span className="shipping-text">Envío gratis</span>
-            </label>
-          </div>
-          
-          <div className="filters-section">
-            <h3 className="filters-title">Descuentos</h3>
-            <div className="discount-options">
-              <label className="discount-label">
-                <input 
-                  type="radio" 
-                  name="discount" 
-                  value="all" 
-                  className="discount-radio"
-                  checked={discountFilter === 'all'}
-                  onChange={handleDiscountFilterChange}
-                />
-                <span className="discount-text">Todos los productos</span>
-              </label>
-              <label className="discount-label">
-                <input 
-                  type="radio" 
-                  name="discount" 
-                  value="withDiscount" 
-                  className="discount-radio"
-                  checked={discountFilter === 'withDiscount'}
-                  onChange={handleDiscountFilterChange}
-                />
-                <span className="discount-text">Con descuento</span>
-              </label>
-            </div>
-          </div>
-          
-          <button 
-            type="button" 
-            className="btn-clear-filters"
-            onClick={clearAllFilters}
-          >
-            Limpiar filtros
-          </button>
-        </aside>
+        <ProductFilters
+          products={products}
+          setPriceRange={setPriceRange}
+          selectedCategories={selectedCategories}
+          priceRange={priceRange}
+          freeShippingOnly={freeShippingOnly}
+          discountFilter={discountFilter}
+          handleCategoryChange={handleCategoryChange}
+          handleSliderChange={handleSliderChange}
+          handlePriceInputChange={handlePriceInputChange}
+          applyPriceFilter={applyPriceFilter}
+          handleFreeShippingChange={handleFreeShippingChange}
+          handleDiscountFilterChange={handleDiscountFilterChange}
+          clearAllFilters={clearAllFilters}
+        />
         
         <div className="content-container">
           <ProductList 
@@ -298,12 +188,12 @@ function App() {
         onClose={closeModal} 
         title={editingProduct ? `Editar: ${editingProduct.name}` : "Agregar Nuevo Producto"}
       >
-        <ProductForm 
-          onAddProduct={addProduct}
-          onUpdateProduct={updateProduct}
-          productToEdit={editingProduct}
-          onCancel={closeModal} 
-        />
+      <ProductForm 
+        onAddProduct={addProduct}
+        onUpdateProduct={updateProduct}
+        productToEdit={editingProduct}
+        onCancel={closeModal} 
+      />
       </Modal>
     </div>
   )
