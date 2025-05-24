@@ -9,6 +9,9 @@ import {useModal} from './customHooks/useModal'
 import {useFilterProducts} from './customHooks/useFilterProducts'
 import { useState } from 'react'
 import ProductFilters from './components/ProductFilters'
+import './App.css';
+import DarkModeToggle from './components/DarkModeToggle'
+
 function App() {
   /***************************************
    * ESTADO DE PRODUCTOS
@@ -143,6 +146,7 @@ function App() {
         <button className="btn-add-product" onClick={openAddModal}>
           Agregar Nuevo Producto
         </button>
+        <DarkModeToggle /> 
       </div>
       
       <div className="main-layout">
