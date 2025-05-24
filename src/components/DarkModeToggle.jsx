@@ -5,36 +5,50 @@ const DarkModeToggle = () => {
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
-    // Detecta la preferencia del sistema operativo
     const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-    // Aplica el tema guardado o el del sistema
-    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+    // Prioriza el tema guardado por el usuario
+    if (savedTheme === 'dark') {
       document.body.classList.add('dark-mode');
+      document.body.classList.remove('light-mode'); // Asegura que no haya light-mode
       setIsDarkMode(true);
-    } else {
+    } else if (savedTheme === 'light') {
       document.body.classList.remove('dark-mode');
-      localStorage.setItem('theme', 'light'); // Asegura que "light" se guarde si no hay preferencia y el sistema es claro
+      document.body.classList.add('light-mode'); // Añade light-mode si el usuario lo forzó
       setIsDarkMode(false);
+    } else {
+      // Si no hay tema guardado, usa la preferencia del sistema
+      if (prefersDark) {
+        document.body.classList.add('dark-mode');
+        document.body.classList.remove('light-mode');
+        setIsDarkMode(true);
+      } else {
+        document.body.classList.remove('dark-mode');
+        document.body.classList.add('light-mode'); // Usa light-mode para claridad si el sistema es claro
+        setIsDarkMode(false);
+      }
     }
-  }, []); // Se ejecuta solo una vez al montar el componente
+  }, []);
 
   const toggleDarkMode = () => {
     if (document.body.classList.contains('dark-mode')) {
       document.body.classList.remove('dark-mode');
+      document.body.classList.add('light-mode'); // Forzamos el modo claro con la clase
       localStorage.setItem('theme', 'light');
       setIsDarkMode(false);
     } else {
       document.body.classList.add('dark-mode');
+      document.body.classList.remove('light-mode'); // Removemos la clase de claro
       localStorage.setItem('theme', 'dark');
       setIsDarkMode(true);
     }
   };
 
+  // ... (tu JSX del botón es el mismo)
   return (
     <button
       onClick={toggleDarkMode}
-      style={{ // Estilos inline usando variables CSS para que el botón también cambie de tema
+      style={{
         padding: '10px 20px',
         margin: '0',
         cursor: 'pointer',
@@ -50,7 +64,7 @@ const DarkModeToggle = () => {
         whiteSpace: 'nowrap',
         transition: 'all 0.2s'
       }}
-      className="dark-mode-toggle-button" // Puedes agregar una clase para estilos adicionales en CSS si lo necesitas
+      className="dark-mode-toggle-button"
     >
       {isDarkMode ? 'Modo Claro' : 'Modo Oscuro'}
     </button>

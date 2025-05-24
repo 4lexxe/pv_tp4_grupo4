@@ -3,47 +3,48 @@
   line-height: 1.5;
   font-weight: 400;
 
-  --bg-primary: #242424; 
-  --text-primary: rgba(255, 255, 255, 0.87); 
-  --link-color: #8be9fd; 
-  --link-hover-color: #bd93f9; 
-  --button-bg: #44475a; 
-  --button-hover-border: #8be9fd; 
-  --card-bg: #2a2d33; 
-  --card-border: #44475a;
-  --header-bg: #3c424a; 
-  --input-bg: #33363d; 
-  --input-border: #555964; 
-  --input-placeholder-color: #999fa8; 
-  --yellow-accent-hover: #FFC400; 
-  --text-on-yellow: #333; 
-  --red-feedback-bg: #721c24; 
-  --red-feedback-text: #f8d7da;
-  --green-feedback-bg: #155724; 
-  --green-feedback-text: #d4edda; 
-  --modal-bg: #2a2d33; 
-  --modal-header-bg: #3c424a;
-  --modal-border-color: #FFD700; 
-  --modal-close-color: #e0e0e0;
-  --modal-close-hover-color: #ffffff; 
-  --modal-close-hover-bg: rgba(255, 255, 255, 0.1); 
-  --filter-panel-bg: #2a2d33; 
-  --filter-section-border: #44475a; 
-  --filter-title-color: #e0e0e0; 
-  --filter-text-color: #e0e0e0; 
-  --slider-bg: #44475a; 
-  --light-gray-bg: #33363d; 
-  --medium-gray-text: #aaaaaa; 
-  --dark-gray-text: #cccccc; 
-  --link-blue: #8be9fd; 
-  --green-shipping: #50fa7b; 
-  --light-gray-border: #44475a; 
-  --lighter-gray-bg: #33363d; 
-  --discount-red: #ff79c6;
+  --bg-primary: #ffffff; /* BLANCO */
+  --text-primary: #213547; /* NEGRO/GRIS OSCURO */
+  --link-color: #646cff;
+  --link-hover-color: #747bff;
+  --button-bg: #f9f9f9;
+  --button-hover-border: #646cff;
+  --card-bg: #ffffff; /* BLANCO para las tarjetas */
+  --card-border: #e6e6e6;
+  --header-bg: #f0f0f0;
+  --input-bg: #FFFDF0;
+  --input-border: #ddd;
+  --input-placeholder-color: #999;
+  --yellow-accent: #FFD700;
+  --yellow-accent-hover: #FFC400;
+  --text-on-yellow: #333;
+  --red-feedback-bg: #f8d7da;
+  --red-feedback-text: #721c24;
+  --green-feedback-bg: #d4edda;
+  --green-feedback-text: #155724;
+  --modal-bg: #ffffff;
+  --modal-header-bg: #FFFDF0;
+  --modal-border-color: #FFD700;
+  --modal-close-color: #666;
+  --modal-close-hover-color: #333;
+  --modal-close-hover-bg: rgba(0, 0, 0, 0.05);
+  --filter-panel-bg: #ffffff;
+  --filter-section-border: #eaeaea;
+  --filter-title-color: #333;
+  --filter-text-color: #333;
+  --slider-bg: #eaeaea;
+  --light-gray-bg: #f5f5f5;
+  --medium-gray-text: #666;
+  --dark-gray-text: #333;
+  --link-blue: #3483fa;
+  --green-shipping: #00a650;
+  --light-gray-border: #e6e6e6;
+  --lighter-gray-bg: #ebebeb;
+  --discount-red: #FF4E4E;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color-scheme: light dark; /* Esto es correcto */
+  color: #213547; /* Color de texto inicial para el modo claro */
+  background-color: #ffffff; /* Color de fondo inicial para el modo claro */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -62,11 +63,14 @@ a:hover {
 }
 
 body {
-  margin: 0;
+ margin: 0;
   display: flex;
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background-color: var(--bg-primary); /* ¡Usa la variable aquí! */
+  color: var(--text-primary); /* ¡Usa la variable aquí! */
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 h1 {
@@ -75,18 +79,7 @@ h1 {
 }
 
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: var(--button-bg); 
-  cursor: pointer;
-  transition: border-color 0.25s, background-color 0.3s ease, color 0.3s ease; 
-  color: var(--text-primary); 
-}
+
 button:hover {
   border-color: var(--button-hover-border); 
 }
@@ -98,9 +91,18 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: var(--button-bg); /* Usa la variable aquí */
   cursor: pointer;
-  transition: border-color 0.25s;
+  /* Combina todas las transiciones */
+  transition: border-color 0.25s, background-color 0.3s ease, color 0.3s ease;
+  color: var(--text-primary); /* Usa la variable aquí */
+}
+button:hover {
+  border-color: var(--button-hover-border); /* Usa la variable aquí */
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
 }
 button:hover {
   border-color: #646cff;
@@ -110,56 +112,53 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
+@media (prefers-color-scheme: dark) {
   :root {
-    --bg-primary: #ffffff;
-    --text-primary: #213547;
-    --link-color: #646cff;
-    --link-hover-color: #747bff;
-    --button-bg: #f9f9f9;
-    --button-hover-border: #646cff;
-    --card-bg: #ffffff;
-    --card-border: #e6e6e6;
-    --header-bg: #f0f0f0;
-    --input-bg: #FFFDF0;
-    --input-border: #ddd;
-    --input-placeholder-color: #999;
-    --yellow-accent: #FFD700;
+    --bg-primary: #242424;
+    --text-primary: rgba(255, 255, 255, 0.87);
+    --link-color: #8be9fd;
+    --link-hover-color: #bd93f9;
+    --button-bg: #44475a;
+    --button-hover-border: #8be9fd;
+    --card-bg: #2a2d33;
+    --card-border: #44475a;
+    --header-bg: #3c424a;
+    --input-bg: #33363d;
+    --input-border: #555964;
+    --input-placeholder-color: #999fa8;
+    --yellow-accent: #FFD700; /* Asumo que este valor es el mismo en ambos modos para el botón */
     --yellow-accent-hover: #FFC400;
     --text-on-yellow: #333;
-    --red-feedback-bg: #f8d7da;
-    --red-feedback-text: #721c24;
-    --green-feedback-bg: #d4edda;
-    --green-feedback-text: #155724;
-    --modal-bg: #ffffff;
-    --modal-header-bg: #FFFDF0;
+    --red-feedback-bg: #721c24;
+    --red-feedback-text: #f8d7da;
+    --green-feedback-bg: #155724;
+    --green-feedback-text: #d4edda;
+    --modal-bg: #2a2d33;
+    --modal-header-bg: #3c424a;
     --modal-border-color: #FFD700;
-    --modal-close-color: #666;
-    --modal-close-hover-color: #333;
-    --modal-close-hover-bg: rgba(0, 0, 0, 0.05);
-    --filter-panel-bg: #ffffff;
-    --filter-section-border: #eaeaea;
-    --filter-title-color: #333;
-    --filter-text-color: #333;
-    --slider-bg: #eaeaea;
-    --light-gray-bg: #f5f5f5;
-    --medium-gray-text: #666;
-    --dark-gray-text: #333;
-    --link-blue: #3483fa;
-    --green-shipping: #00a650;
-    --light-gray-border: #e6e6e6;
-    --lighter-gray-bg: #ebebeb;
-    --discount-red: #FF4E4E;
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
+    --modal-close-color: #e0e0e0;
+    --modal-close-hover-color: #ffffff;
+    --modal-close-hover-bg: rgba(255, 255, 255, 0.1);
+    --filter-panel-bg: #2a2d33;
+    --filter-section-border: #44475a;
+    --filter-title-color: #e0e0e0;
+    --filter-text-color: #e0e0e0;
+    --slider-bg: #44475a;
+    --light-gray-bg: #33363d;
+    --medium-gray-text: #aaaaaa;
+    --dark-gray-text: #cccccc;
+    --link-blue: #8be9fd;
+    --green-shipping: #50fa7b;
+    --light-gray-border: #44475a;
+    --lighter-gray-bg: #33363d;
+    --discount-red: #ff79c6;
+
+    color: rgba(255, 255, 255, 0.87);
+    background-color: #242424;
   }
 }
+
+
 body.dark-mode {
   --bg-primary: #282c34; 
   --text-primary: #e0e0e0;
@@ -209,4 +208,48 @@ body {
   background-color: var(--bg-primary); 
   color: var(--text-primary); 
   transition: background-color 0.3s ease, color 0.3s ease; 
+}
+
+body.light-mode {
+  --bg-primary: #ffffff;
+  --text-primary: #213547;
+  --link-color: #646cff;
+  --link-hover-color: #747bff;
+  --button-bg: #f9f9f9;
+  --button-hover-border: #646cff;
+  --card-bg: #ffffff;
+  --card-border: #e6e6e6;
+  --header-bg: #f0f0f0;
+  --input-bg: #FFFDF0;
+  --input-border: #ddd;
+  --input-placeholder-color: #999;
+  --yellow-accent: #FFD700;
+  --yellow-accent-hover: #FFC400;
+  --text-on-yellow: #333;
+  --red-feedback-bg: #f8d7da;
+  --red-feedback-text: #721c24;
+  --green-feedback-bg: #d4edda;
+  --green-feedback-text: #155724;
+  --modal-bg: #ffffff;
+  --modal-header-bg: #FFFDF0;
+  --modal-border-color: #FFD700;
+  --modal-close-color: #666;
+  --modal-close-hover-color: #333;
+  --modal-close-hover-bg: rgba(0, 0, 0, 0.05);
+  --filter-panel-bg: #ffffff;
+  --filter-section-border: #eaeaea;
+  --filter-title-color: #333;
+  --filter-text-color: #333;
+  --slider-bg: #eaeaea;
+  --light-gray-bg: #f5f5f5;
+  --medium-gray-text: #666;
+  --dark-gray-text: #333;
+  --link-blue: #3483fa;
+  --green-shipping: #00a650;
+  --light-gray-border: #e6e6e6;
+  --lighter-gray-bg: #ebebeb;
+  --discount-red: #FF4E4E;
+
+  color: #213547;
+  background-color: #ffffff;
 }
